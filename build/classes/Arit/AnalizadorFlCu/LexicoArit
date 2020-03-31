@@ -1,0 +1,121 @@
+
+package Arit.AnalizadorFlCu;
+import Error.ErrorAr;
+import Informacion.Informacion;
+import java_cup.runtime.Symbol; 
+
+%% 
+
+
+%class LexicoArit
+%public 
+%line 
+%char 
+%cup 
+%unicode
+%ignorecase
+
+%init{ 
+    yyline = 1; 
+    yychar = 1; 
+%init} 
+
+%{
+    String archivo;       //Nombre del archivo analizado//[A-Za-z"_"]+["_"0-9A-Za-z]*
+
+%}
+
+
+
+BLANCOS=[ \t\r\f]+
+
+NUM = [0-9]+
+DEC = [0-9]+("."[0-9]+)
+CADENACOMILLASDOBLES = [\"]([^\"\n]|(\\\"))*[\"]
+
+
+IDENTIFICADOR = ([A-Za-z"_"0-9"."])["_""."0-9A-Za-z]*
+
+
+
+inicioComentarioMult = "#*"
+finComentarioMult = "*#"
+inicioComentarioLinea = "#"
+%state MULTICOMMENT,LINECOMMENT
+
+%%
+<YYINITIAL>{CADENACOMILLASDOBLES}  { return new Symbol(sym.CADENA,yyline,yychar, (yytext()).substring(1,yytext().length()-1));} 
+
+<YYINITIAL>"null"           { return new Symbol(sym.NULO, yyline, yychar, yytext()); }
+<YYINITIAL>"break"          { return new Symbol(sym.DETENER, yyline, yychar, yytext()); }
+<YYINITIAL>"continue"       { return new Symbol(sym.CONTINUE, yyline, yychar, yytext()); }
+<YYINITIAL>"return"         { return new Symbol(sym.RETORNAR, yyline, yychar, yytext()); }
+
+
+<YYINITIAL>"if"             { return new Symbol(sym.SI, yyline, yychar, yytext()); }
+<YYINITIAL>"else"           { return new Symbol(sym.SINO, yyline, yychar, yytext()); }
+<YYINITIAL>"switch"         { return new Symbol(sym.SELECCIONAR, yyline, yychar, yytext()); }
+<YYINITIAL>"case"           { return new Symbol(sym.CASO, yyline, yychar, yytext()); }
+<YYINITIAL>"while"          { return new Symbol(sym.WHILE, yyline, yychar, yytext()); }
+<YYINITIAL>"do"             { return new Symbol(sym.DOWHILE, yyline, yychar, yytext()); }
+<YYINITIAL>"function"       { return new Symbol(sym.FUNCION, yyline, yychar, yytext()); }
+<YYINITIAL>"default"        { return new Symbol(sym.DEFECTO, yyline, yychar, yytext()); }
+<YYINITIAL>"print"          { return new Symbol(sym.IMPRIMIR, yyline, yychar, yytext()); }
+<YYINITIAL>"in"             { return new Symbol(sym.IN, yyline, yychar, yytext()); }
+<YYINITIAL>"for"            { return new Symbol(sym.FOR, yyline, yychar, yytext()); }
+
+
+<YYINITIAL>"+"              { return new Symbol(sym.MAS, yyline, yychar, yytext()); }
+<YYINITIAL>"-"              { return new Symbol(sym.MENOS, yyline, yychar, yytext()); }
+<YYINITIAL>"*"              { return new Symbol(sym.POR, yyline, yychar, yytext()); }
+<YYINITIAL>"/"              { return new Symbol(sym.DIVIDIDO, yyline, yychar, yytext()); }
+<YYINITIAL>"^"              { return new Symbol(sym.POTENCIA, yyline, yychar, yytext()); }
+<YYINITIAL>"="              { return new Symbol(sym.IGUAL, yyline, yychar, yytext()); }
+<YYINITIAL>":"              { return new Symbol(sym.DOSPUNTOS, yyline, yychar, yytext()); }
+<YYINITIAL>"%%"             { return new Symbol(sym.MODULO, yyline, yychar, yytext()); }
+<YYINITIAL>"?"              { return new Symbol(sym.TERNARIO, yyline, yychar, yytext()); }
+
+
+<YYINITIAL>"=="             { return new Symbol(sym.IGUALIGUAL, yyline, yychar, yytext()); }
+<YYINITIAL>"!="             { return new Symbol(sym.DIFQUE, yyline, yychar, yytext()); }
+<YYINITIAL>"|"              { return new Symbol(sym.OR, yyline, yychar, yytext()); }
+<YYINITIAL>"&"              { return new Symbol(sym.AND, yyline, yychar, yytext()); }
+<YYINITIAL>"!"              { return new Symbol(sym.NOT, yyline, yychar, yytext()); }
+
+<YYINITIAL>"<"              { return new Symbol(sym.MENOR, yyline, yychar, yytext()); }
+<YYINITIAL>">"              { return new Symbol(sym.MAYOR, yyline, yychar, yytext()); }
+<YYINITIAL>"<="             { return new Symbol(sym.MENORIGUAL, yyline, yychar, yytext()); }
+<YYINITIAL>">="             { return new Symbol(sym.MAYORIGUAL, yyline, yychar, yytext()); }
+<YYINITIAL>"=>"             { return new Symbol(sym.FLECHA, yyline, yychar, yytext()); }
+
+<YYINITIAL>";"              { return new Symbol(sym.PTCOMA, yyline, yychar, yytext()); }
+<YYINITIAL>"{"              { return new Symbol(sym.LLAVEA, yyline, yychar, yytext()); }
+<YYINITIAL>"}"              { return new Symbol(sym.LLAVEC, yyline, yychar, yytext()); }
+<YYINITIAL>"("              { return new Symbol(sym.PARIZQ, yyline, yychar, yytext()); }
+<YYINITIAL>")"              { return new Symbol(sym.PARDER, yyline, yychar, yytext()); }
+<YYINITIAL>","              { return new Symbol(sym.COMA, yyline, yychar, yytext()); }
+
+<YYINITIAL>"true"           { return new Symbol(sym.TRUE, yyline, yychar, yytext()); }
+<YYINITIAL>"false"          { return new Symbol(sym.FALSE, yyline, yychar, yytext()); }
+<YYINITIAL>"["              { return new Symbol(sym.BRAA, yyline, yychar, yytext()); }
+<YYINITIAL>"]"              { return new Symbol(sym.BRAC, yyline, yychar, yytext()); }
+
+
+<YYINITIAL>{NUM}            { return new Symbol(sym.ENTERO,yyline,yychar, yytext()); } 
+<YYINITIAL>{DEC}            { return new Symbol(sym.DECIMAL,yyline,yychar, yytext()); } 
+
+<YYINITIAL>\n               {yychar=1;}
+<YYINITIAL>{BLANCOS}        {}
+
+<YYINITIAL>{IDENTIFICADOR}  { return new Symbol(sym.IDENTIFICADOR,yyline,yychar, yytext()); } 
+<YYINITIAL>{inicioComentarioMult}                        {yybegin(MULTICOMMENT);}
+<YYINITIAL>{inicioComentarioLinea}                       {yybegin(LINECOMMENT);}
+<MULTICOMMENT>{finComentarioMult}  {yybegin(YYINITIAL);}
+<MULTICOMMENT>\n                    {yychar=1;}
+<MULTICOMMENT>.                     {}
+
+<LINECOMMENT>\n                     {yybegin(YYINITIAL);}  
+<LINECOMMENT>.                      {}
+<YYINITIAL>. {
+    Informacion.agregarError( new ErrorAr("Lexio", "El caracter '" +yytext()+"' no se reconocio", yyline, yychar ));
+}

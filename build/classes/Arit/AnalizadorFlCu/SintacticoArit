@@ -1,0 +1,374 @@
+
+package Arit.AnalizadorFlCu;
+
+import Arit.AltaAbstraccion.*;
+import Arit.CambioFlujo.*;
+import Arit.Ciclos.*;
+import Arit.ControlDeFlujo.*;
+import Arit.Entorno.*;
+import Arit.OperacionersPrimitivas.*;
+import Arit.ValorImplicito.*;
+import Error.ErrorAr;
+import Informacion.Informacion;
+
+import java.util.LinkedList;
+import java_cup.runtime.*;
+import java_cup.runtime.XMLElement;
+
+parser code 
+{:
+    
+    public LinkedList<NodoAst> AST;
+    public String archivo;
+
+    public void syntax_error(Symbol s){ 
+        System.err.println("Error Sintáctico en la Línea " + (s.left) +" Columna "+s.right+ ". No se esperaba este componente: " +s.value+"."); 
+        Informacion.agregarError( new ErrorAr("Sintactico", "No se esperaba '" + s.value +"'", s.left, s.right ));
+    } 
+     
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.err.println("Error síntactico irrecuperable en la Línea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido."); 
+        Informacion.agregarError( new ErrorAr("Sintactico", "No se esperaba '" + s.value +"'", s.left, s.right ));
+    }  
+
+    public LinkedList<NodoAst> getAST() {
+        return AST;
+    }
+    
+:} 
+
+
+
+terminal String PTCOMA, PARIZQ, PARDER, COMA, LLAVEA, LLAVEC, DOSPUNTOS, BRAA, BRAC;
+terminal String MAS, MENOS, POR, DIVIDIDO, MODULO;
+terminal String TRUE, FALSE;
+terminal String MENOR,MAYOR,MENORIGUAL,MAYORIGUAL,DIFQUE,IGUALIGUAL;
+terminal String NOT,OR,AND;
+terminal String ENTERO;
+terminal String DECIMAL;
+terminal String CADENA;
+terminal String IMPRIMIR;
+terminal String IGUAL;
+terminal String POTENCIA;
+terminal String IDENTIFICADOR;
+terminal String SI, SINO;
+terminal String SELECCIONAR, CASO;
+terminal String DEFECTO;
+terminal String DETENER,CONTINUE,TERNARIO;
+terminal String RETORNAR, FUNCION, FLECHA;
+terminal String NULO;
+terminal String UMENOS;
+terminal String WHILE, DOWHILE, IN, FOR;
+
+
+
+non terminal ini;
+non terminal LinkedList<NodoAst> SENTENCIAS;
+non terminal NodoAst SENTENCIA;
+non terminal NodoAst SENTENCIA_DECLARACION;
+non terminal NodoAst SENTENCIA_ASIGNACION;
+non terminal NodoAst SENTENCIA_IMPRIMIR;
+
+non terminal Expresion EXPRESION;
+non terminal Expresion EXPRESION_ARITMETICA;
+non terminal Expresion EXPRESION_LOGICA;
+non terminal Expresion EXPRESION_RELACIONAL;
+non terminal Expresion PRIMITIVO;
+non terminal NodoAst SENTENCIA_SI;
+non terminal LinkedList<NodoAst> SENTENCIA_SINO;
+non terminal NodoAst SENTENCIA_SELECCIONAR;
+non terminal LinkedList<Caso> SENTENCIA_CASOS;
+non terminal Caso SENTENCIA_CASO;
+non terminal Caso SENTENCIA_DEFECTO;
+non terminal NodoAst SENTENCIA_DETENER;
+non terminal NodoAst SENTENCIA_CONTINUE;
+non terminal Expresion SENTENCIA_LLAMADA;
+
+non terminal NodoAst DECLARACION_METODO;
+non terminal Parametro PARAMETRO;
+non terminal LinkedList<Parametro> LISTA_PARAMETROS;
+non terminal LinkedList<NodoAst> CAMPOS;
+non terminal NodoAst CAMPO;
+non terminal NodoAst SENTENCIA_RETORNAR;
+non terminal Expresion SENTENCIA_ACCESO;
+non terminal LinkedList<NodoAcceso> LISTA_ACCESOS;
+non terminal NodoAcceso ACCESOS;
+
+non terminal Expresion SENTENCIA_ACCESO_ARREGLO;
+non terminal NodoAst SENTENCIA_WHILE;
+non terminal NodoAst SENTENCIA_DOWHILE;
+non terminal NodoAst SENTENCIA_FOR;
+
+
+non terminal Expresion LLAMADA_ACCESO_ARREGLO;
+non terminal LinkedList<Expresion> LISTA_LLAMADA; 
+non terminal Expresion ELEMENTO_LLAMADA;
+non terminal Expresion OPERADOR_TERNARIO;
+non terminal Expresion SENTENCIA_LLAMADA_ACCESO;
+
+precedence nonassoc IGUAL;
+precedence left   PARIZQ;
+precedence right TERNARIO, DOSPUNTOS;
+precedence left  OR;
+precedence left  AND;
+precedence left  DIFQUE, IGUALIGUAL;
+precedence left  MENOR, MAYOR, MENORIGUAL, MAYORIGUAL;
+precedence left  MAS, MENOS;
+precedence left  POR, DIVIDIDO, MODULO;
+precedence left POTENCIA; 
+precedence right NOT;
+precedence right UMENOS;
+precedence left  BRAA;
+
+//Operaciones logicas
+//
+//Operaciones numericas
+
+
+start with ini;
+
+ini::=
+    CAMPOS:b        {: AST = b; :}
+;
+
+CAMPOS::=
+    CAMPOS:a CAMPO:b    {: RESULT = a; RESULT.add(b); :}
+    | CAMPO:a           {: RESULT = new LinkedList<NodoAst>(); RESULT.add(a); :}
+;
+
+CAMPO::=
+    SENTENCIA:a                         {: RESULT = a; :}
+    | DECLARACION_METODO:a              {: RESULT = a; :}
+;
+
+DECLARACION_METODO::=
+    IDENTIFICADOR:a IGUAL FUNCION PARIZQ PARDER LLAVEA SENTENCIAS:b LLAVEC                          {: RESULT = new Funcion(a, new LinkedList<Parametro>(), b, aleft, aright);  :}
+    | IDENTIFICADOR:a IGUAL FUNCION PARIZQ LISTA_PARAMETROS:b PARDER LLAVEA SENTENCIAS:c LLAVEC     {: RESULT = new Funcion(a, b, c, aleft, aright);  :}
+    | IDENTIFICADOR:a IGUAL PARIZQ PARDER FLECHA LLAVEA SENTENCIAS:b LLAVEC                         {: RESULT = new Funcion(a, new LinkedList<Parametro>(), b, aleft, aright);  :}
+    | IDENTIFICADOR:a IGUAL PARIZQ IDENTIFICADOR:d IGUAL EXPRESION:e PARDER FLECHA LLAVEA SENTENCIAS:c LLAVEC      
+        {:  
+            LinkedList<Parametro> b = new LinkedList<Parametro>();
+            b.addFirst(new Parametro(d, e));
+            RESULT = new Funcion(a, b, c, aleft, aright);  
+        :}
+    | IDENTIFICADOR:a IGUAL PARIZQ IDENTIFICADOR:d IGUAL EXPRESION:e COMA LISTA_PARAMETROS:b PARDER FLECHA LLAVEA SENTENCIAS:c LLAVEC      
+        {:  
+            b.addFirst(new Parametro(d, e));
+            RESULT = new Funcion(a, b, c, aleft, aright);  
+        :}
+    | IDENTIFICADOR:a IGUAL PARIZQ EXPRESION:b PARDER FLECHA LLAVEA SENTENCIAS:c LLAVEC
+        {: 
+            if(b instanceof Identificador){
+
+            LinkedList<Parametro> pa = new LinkedList<Parametro>();
+            pa.add(new Parametro(((Identificador)b).Identificador, null));
+                RESULT = new Funcion(a, pa, c, aleft, aright);
+            } 
+        :}
+    | IDENTIFICADOR:a IGUAL PARIZQ IDENTIFICADOR:d COMA LISTA_PARAMETROS:b PARDER FLECHA LLAVEA SENTENCIAS:c LLAVEC      
+        {: 
+            b.addFirst(new Parametro(d, null));
+            RESULT = new Funcion(a, b, c, aleft, aright);  
+        :}
+;
+
+LISTA_PARAMETROS::=
+    LISTA_PARAMETROS:a COMA PARAMETRO:b         {: RESULT = a; RESULT.add(b); :}
+    | PARAMETRO:a                               {: RESULT = new LinkedList<Parametro>(); RESULT.add(a);   :}
+;
+
+PARAMETRO::=
+    IDENTIFICADOR:a IGUAL EXPRESION:b         {: RESULT = new Parametro(a, b); :}
+    | IDENTIFICADOR:a                             {: RESULT = new Parametro(a, null); :}
+;
+
+SENTENCIAS::=
+    SENTENCIAS:a SENTENCIA:b    {: RESULT = a; RESULT.add(b); :}
+    | SENTENCIA:a               {: RESULT = new LinkedList<NodoAst>(); RESULT.add(a); :}
+;
+
+SENTENCIA_LLAMADA::=
+    IDENTIFICADOR:a PARIZQ LISTA_LLAMADA:b PARDER       {: RESULT = new Llamada(a, b, aleft, aright); :}
+    | IDENTIFICADOR:a PARIZQ  PARDER       {: RESULT = new Llamada(a, new LinkedList<Expresion>(), aleft, aright); :}
+;
+
+LISTA_LLAMADA::=
+    LISTA_LLAMADA:a COMA ELEMENTO_LLAMADA:b    {: RESULT = a; RESULT.add(b); :}
+    | ELEMENTO_LLAMADA:a                {: RESULT = new LinkedList<Expresion>(); RESULT.add(a); :}
+;
+
+ELEMENTO_LLAMADA::=
+    EXPRESION:a             {: RESULT = a; :}
+    | DEFECTO:a             {: RESULT = new Defecto(aleft, aright); :}
+;
+
+SENTENCIA::=
+    SENTENCIA_DECLARACION:a PTCOMA      {: RESULT = a; :}
+    | SENTENCIA_DECLARACION:a           {: RESULT = a; :}
+    | SENTENCIA_IMPRIMIR:a PTCOMA       {: RESULT = a; :}
+    | SENTENCIA_IMPRIMIR:a              {: RESULT = a; :}
+    | SENTENCIA_SI:a                    {: RESULT = a; :}
+    | SENTENCIA_SELECCIONAR:a           {: RESULT = a; :}
+    | SENTENCIA_DETENER:a PTCOMA        {: RESULT = a; :}
+    | SENTENCIA_DETENER:a               {: RESULT = a; :}
+    | SENTENCIA_CONTINUE:a  PTCOMA      {: RESULT = a; :}
+    | SENTENCIA_CONTINUE:a              {: RESULT = a; :}
+    | SENTENCIA_WHILE:a                 {: RESULT = a; :}
+    | SENTENCIA_DOWHILE:a PTCOMA        {: RESULT = a; :}
+    | SENTENCIA_DOWHILE:a               {: RESULT = a; :}
+    | SENTENCIA_RETORNAR:a PTCOMA       {: RESULT = a; :}
+    | SENTENCIA_RETORNAR:a              {: RESULT = a; :}
+    | SENTENCIA_ASIGNACION:a PTCOMA     {: RESULT = a; :}
+    | SENTENCIA_ASIGNACION:a            {: RESULT = a; :}
+    | SENTENCIA_FOR:a                   {: RESULT = a; :}
+    | EXPRESION:a PTCOMA                {: RESULT = a; :}
+    | EXPRESION:a                       {: RESULT = a; :}
+; 
+
+
+SENTENCIA_DECLARACION::=
+    IDENTIFICADOR:a IGUAL EXPRESION:b               {: RESULT = new DeclaracionAsignacion(a, b, aleft, aright); :}
+;
+
+SENTENCIA_SI::=
+    SI PARIZQ EXPRESION:b PARDER LLAVEA SENTENCIAS:c LLAVEC                       {: RESULT = new Si(b, c, null, bleft, bright); :}
+    | SI PARIZQ EXPRESION:b PARDER LLAVEA SENTENCIAS:c LLAVEC SENTENCIA_SINO:d    {: RESULT = new Si(b, c, d, bleft, bright); :}
+;
+
+SENTENCIA_SINO::=
+    SINO LLAVEA SENTENCIAS:a LLAVEC {: RESULT = a; :}
+    | SINO SENTENCIA_SI:a           {: RESULT = new LinkedList<NodoAst>(); RESULT.add(a); :}
+;
+
+SENTENCIA_SELECCIONAR::=
+    SELECCIONAR PARIZQ EXPRESION:a PARDER LLAVEA SENTENCIA_CASOS:b LLAVEC       {: RESULT = new Seleccionar(a, b, null, aleft, aright); :}
+    | SELECCIONAR PARIZQ EXPRESION:a PARDER LLAVEA SENTENCIA_CASOS:b SENTENCIA_DEFECTO:c LLAVEC    {: RESULT = new Seleccionar(a, b, c, aleft, aright); :}
+;
+
+SENTENCIA_CASOS::=
+    SENTENCIA_CASOS:a SENTENCIA_CASO:b      {: RESULT = a; RESULT.add(b); :}
+    | SENTENCIA_CASO:a                      {: RESULT = new LinkedList<Caso>(); RESULT.add(a); :}   
+;
+
+SENTENCIA_CASO::=
+    CASO EXPRESION:a DOSPUNTOS SENTENCIAS:b         {: RESULT = new Caso(a, b); :}
+;
+
+SENTENCIA_DEFECTO::=
+    DEFECTO DOSPUNTOS SENTENCIAS:a                  {: RESULT = new Caso(null, a); :}
+;
+
+SENTENCIA_DETENER::=
+    DETENER:a               {: RESULT = new Break(aleft, aright); :}
+;
+
+SENTENCIA_CONTINUE::=
+    CONTINUE:a              {: RESULT = new Continue(aleft, aright); :}
+;
+
+SENTENCIA_IMPRIMIR::=
+    IMPRIMIR:a PARIZQ EXPRESION:b PARDER      {: RESULT = new Imprimir(b,aleft,aright); :}
+;
+
+SENTENCIA_WHILE::=
+    WHILE:a PARIZQ EXPRESION:b PARDER LLAVEA SENTENCIAS:c LLAVEC   {: RESULT = new While(b,c,aleft,aright);  :}
+;
+
+SENTENCIA_DOWHILE::=
+    DOWHILE:a LLAVEA SENTENCIAS:b LLAVEC WHILE PARIZQ EXPRESION:c PARDER      {: RESULT = new DoWhile(c,b,aleft,aright); :}
+;
+
+SENTENCIA_RETORNAR::=
+    RETORNAR:a PARIZQ EXPRESION:b PARDER            {: RESULT = new Return(b, aleft, aright); :}
+    | RETORNAR:a                                    {: RESULT = new Return(null, aleft, aright); :}
+;
+
+SENTENCIA_ACCESO::=
+    IDENTIFICADOR:a LISTA_ACCESOS:b     {: RESULT = new Acceso(a, b, aleft, aright); :}
+;
+
+LISTA_ACCESOS::=
+    LISTA_ACCESOS:a ACCESOS:b           {: RESULT = a; RESULT.add(b); :}
+    | ACCESOS:a                         {: RESULT = new LinkedList<NodoAcceso>(); RESULT.add(a); :}   
+;
+
+ACCESOS::=
+    BRAA EXPRESION:a BRAC                       {:  RESULT = new NodoAcceso(a, true); :}
+    | BRAA BRAA EXPRESION:a BRAC BRAC           {:  RESULT = new NodoAcceso(a, false); :}
+    | BRAA EXPRESION:a COMA EXPRESION:b BRAC    {:  RESULT = new NodoAcceso(a, b, false, true); :}
+    | BRAA COMA EXPRESION:b BRAC                {:  RESULT = new NodoAcceso(null, b, false, true); :}
+    | BRAA EXPRESION:a COMA BRAC                {:  RESULT = new NodoAcceso(a, null, false, true); :}
+;
+
+SENTENCIA_ASIGNACION::=
+    IDENTIFICADOR:a LISTA_ACCESOS:b IGUAL EXPRESION:c           {: RESULT = new AsignarEstructura(a, b, c , aleft, aright); :}
+;
+
+SENTENCIA_FOR::=
+    FOR PARIZQ IDENTIFICADOR:a IN EXPRESION:b PARDER LLAVEA SENTENCIAS:c LLAVEC     {: RESULT = new For(a, b, c, aleft, aright); :}
+;
+
+SENTENCIA_LLAMADA_ACCESO::=
+    SENTENCIA_LLAMADA:a LISTA_ACCESOS:b     {: RESULT = new LlamadaAcceso(a, b, aleft, aright); :}
+;
+
+EXPRESION::=
+    EXPRESION_ARITMETICA:a          {: RESULT = a; :}
+    | EXPRESION_LOGICA:a            {: RESULT = a; :}
+    | EXPRESION_RELACIONAL:a        {: RESULT = a; :}
+    | PRIMITIVO:a                   {: RESULT = a; :}
+    | PARIZQ EXPRESION:a PARDER     {: RESULT = a; :}
+    | SENTENCIA_LLAMADA:a           {: RESULT = a; :}
+    | SENTENCIA_ACCESO:a            {: RESULT = a; :}
+    | OPERADOR_TERNARIO:a           {: RESULT = a; :}
+    | SENTENCIA_LLAMADA_ACCESO:a    {: RESULT = a; :}
+;
+
+OPERADOR_TERNARIO::=
+    EXPRESION:a TERNARIO EXPRESION:b DOSPUNTOS EXPRESION:c          {: RESULT = new Ternario(a, b, c, aleft, aright); :}
+;
+
+EXPRESION_ARITMETICA::=
+    MENOS EXPRESION:b                       {: RESULT = new Operacion(b,Operacion.Operador.MENOS_UNARIO, bleft, bright); :}%prec UMENOS 
+    | EXPRESION:a MAS:b EXPRESION:c         {: RESULT = new Operacion(a,c,Operacion.getOperador(b), bleft, bright); :}
+    | EXPRESION:a MENOS:b EXPRESION:c       {: RESULT = new Operacion(a,c,Operacion.getOperador(b), bleft, bright); :}
+    | EXPRESION:a POR:b EXPRESION:c         {: RESULT = new Operacion(a,c,Operacion.getOperador(b), bleft, bright); :}
+    | EXPRESION:a DIVIDIDO:b EXPRESION:c    {: RESULT = new Operacion(a,c,Operacion.getOperador(b), bleft, bright); :}
+    | EXPRESION:a POTENCIA:b EXPRESION:c    {: RESULT = new Operacion(a,c,Operacion.getOperador(b), bleft, bright); :}
+    | EXPRESION:a MODULO:b EXPRESION:c      {: RESULT = new Operacion(a,c,Operacion.getOperador(b), bleft, bright); :}
+;
+
+EXPRESION_LOGICA::=
+    EXPRESION:a OR:b EXPRESION:c          {: RESULT = new Operacion(a,c,Operacion.getOperador(b), bleft, bright); :}
+    | EXPRESION:a AND:b EXPRESION:c       {: RESULT = new Operacion(a,c,Operacion.getOperador(b), bleft, bright); :}
+    | NOT:a EXPRESION:b                   {: RESULT = new Operacion(b,Operacion.getOperador(a), aleft, aright); :}
+;
+
+EXPRESION_RELACIONAL::=
+    EXPRESION:a MAYOR:b EXPRESION:c             {: RESULT = new Operacion(a,c,Operacion.getOperador(b), bleft, bright); :}
+    | EXPRESION:a MENOR:b EXPRESION:c           {: RESULT = new Operacion(a,c,Operacion.getOperador(b), bleft, bright); :}
+    | EXPRESION:a IGUALIGUAL:b EXPRESION:c      {: RESULT = new Operacion(a,c,Operacion.getOperador(b), bleft, bright); :}
+    | EXPRESION:a DIFQUE:b EXPRESION:c          {: RESULT = new Operacion(a,c,Operacion.getOperador(b), bleft, bright); :}
+    | EXPRESION:a MAYORIGUAL:b EXPRESION:c      {: RESULT = new Operacion(a,c,Operacion.getOperador(b), bleft, bright); :}
+    | EXPRESION:a MENORIGUAL:b EXPRESION:c      {: RESULT = new Operacion(a,c,Operacion.getOperador(b), bleft, bright); :}
+;
+
+PRIMITIVO::=
+    ENTERO:a                {: RESULT = new Primitivo(Integer.parseInt(a), "Integer", aleft, aright); :}
+    | DECIMAL:a             {: RESULT = new Primitivo(Double.parseDouble(a), "Numeric", aleft, aright); :}
+    | CADENA:a              {: 
+                                a = a.replace("\\'", "\'");
+                                a = a.replace("\\\"", "\"");
+                                a = a.replace("\\?", "?");
+                                a = a.replace("\\%", "%");
+                                a = a.replace("\\\\", "\\");
+                                a = a.replace("\\n", "\n");
+                                a = a.replace("\\t", "\t");
+                                a = a.replace("\\r", "\r");
+                                RESULT = new Primitivo(String.valueOf(a), "String", aleft, aright); 
+                            :}
+    | TRUE:a                {: RESULT = new Primitivo(true, "Boolean", aleft, aright); :}
+    | FALSE:a               {: RESULT = new Primitivo(false, "Boolean", aleft, aright); :}
+    | NULO:a                {: RESULT = new Primitivo("null", "String", aleft, aright); :}
+    | IDENTIFICADOR:a       {: RESULT = new Identificador(a, aleft, aright); :}
+;
