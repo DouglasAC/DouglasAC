@@ -221,8 +221,10 @@ SENTENCIA::=
     | SENTENCIA_ASIGNACION:a PTCOMA     {: RESULT = a; :}
     | SENTENCIA_ASIGNACION:a            {: RESULT = a; :}
     | SENTENCIA_FOR:a                   {: RESULT = a; :}
-    | EXPRESION:a PTCOMA                {: RESULT = a; :}
-    | EXPRESION:a                       {: RESULT = a; :}
+    | SENTENCIA_LLAMADA:a PTCOMA        {: RESULT = a; :}
+    | SENTENCIA_LLAMADA:a               {: RESULT = a; :}
+    | error PTCOMA
+    | error LLAVEC
 ; 
 
 

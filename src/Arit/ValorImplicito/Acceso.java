@@ -77,7 +77,7 @@ public class Acceso extends Expresion {
                                 if (pos.valores.get(0).valor instanceof Integer) {
                                     Lista vec = (Lista) estructura;
                                     int val_pos = (int) pos.valores.get(0).valor;
-                                    Object nuevo = vec.getPosicionSegundoAcceeso(val_pos - 1);
+                                    Object nuevo = vec.getPosicionSegundoAcceesoSinClon(val_pos - 1);
                                     if (nuevo != null) {
                                         estructura = nuevo;
                                     } else {

@@ -14,6 +14,16 @@ import java.util.LinkedList;
 
 public class GramaticaJCC implements GramaticaJCCConstants {
 
+    public void error_skipto(int kind) {
+        ParseException e = generateParseException();  // generate the exception object.
+        System.out.println(e.toString());  // print the error message
+        Token t;
+        //Informacion.agregarError( new ErrorAr("Sintactico", "No se esperaba '" + n +"'", fila,  columna ));
+        do {
+          t = getNextToken();
+        } while (t.kind != kind);
+    }
+
   final public LinkedList<NodoAst> Inicio() throws ParseException {
     LinkedList<NodoAst> Ast = new LinkedList<NodoAst>();
     Ast = Campos();
@@ -53,132 +63,142 @@ public class GramaticaJCC implements GramaticaJCCConstants {
 
   final public NodoAst Campo() throws ParseException {
     NodoAst sen;
-    if (jj_2_1(5)) {
-      sen = DeclararFuncion();
-                                                     {if (true) return sen;}
-    } else if (jj_2_2(3)) {
-      sen = Declaracion();
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case PTCOMA:
-        jj_consume_token(PTCOMA);
-        break;
-      default:
-        jj_la1[1] = jj_gen;
-        ;
-      }
+    try {
+      if (jj_2_1(5)) {
+        sen = DeclararFuncion();
                                                          {if (true) return sen;}
-    } else {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case IMPRIMIR:
-        sen = Imprimir();
+      } else if (jj_2_2(3)) {
+        sen = Declaracion();
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case PTCOMA:
           jj_consume_token(PTCOMA);
           break;
         default:
-          jj_la1[2] = jj_gen;
+          jj_la1[1] = jj_gen;
           ;
         }
-                                          {if (true) return sen;}
-        break;
-      case SI:
-        sen = Si();
-                                          {if (true) return sen;}
-        break;
-      case SWITCH:
-        sen = Seleccionar();
-                                          {if (true) return sen;}
-        break;
-      case WHILE:
-        sen = While();
-                                          {if (true) return sen;}
-        break;
-      case DO:
-        sen = DoWhile();
+                                                             {if (true) return sen;}
+      } else {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case PTCOMA:
-          jj_consume_token(PTCOMA);
-          break;
-        default:
-          jj_la1[3] = jj_gen;
-          ;
-        }
-                                          {if (true) return sen;}
-        break;
-      case FOR:
-        sen = For();
-                                          {if (true) return sen;}
-        break;
-      case BREAK:
-        sen = Break();
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case PTCOMA:
-          jj_consume_token(PTCOMA);
-          break;
-        default:
-          jj_la1[4] = jj_gen;
-          ;
-        }
-                                          {if (true) return sen;}
-        break;
-      case CONTINUE:
-        sen = Continue();
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case PTCOMA:
-          jj_consume_token(PTCOMA);
-          break;
-        default:
-          jj_la1[5] = jj_gen;
-          ;
-        }
-                                          {if (true) return sen;}
-        break;
-      case RETURN:
-        sen = Return();
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case PTCOMA:
-          jj_consume_token(PTCOMA);
-          break;
-        default:
-          jj_la1[6] = jj_gen;
-          ;
-        }
-                                          {if (true) return sen;}
-        break;
-      default:
-        jj_la1[9] = jj_gen;
-        if (jj_2_3(3)) {
-          sen = Llamada();
+        case IMPRIMIR:
+          sen = Imprimir();
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case PTCOMA:
             jj_consume_token(PTCOMA);
             break;
           default:
-            jj_la1[7] = jj_gen;
+            jj_la1[2] = jj_gen;
             ;
           }
-                                                        {if (true) return sen;}
-        } else {
+                                              {if (true) return sen;}
+          break;
+        case SI:
+          sen = Si();
+                                              {if (true) return sen;}
+          break;
+        case SWITCH:
+          sen = Seleccionar();
+                                              {if (true) return sen;}
+          break;
+        case WHILE:
+          sen = While();
+                                              {if (true) return sen;}
+          break;
+        case DO:
+          sen = DoWhile();
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-          case IDENTIFICADOR:
-            sen = AsignarEstructura();
+          case PTCOMA:
+            jj_consume_token(PTCOMA);
+            break;
+          default:
+            jj_la1[3] = jj_gen;
+            ;
+          }
+                                              {if (true) return sen;}
+          break;
+        case FOR:
+          sen = For();
+                                              {if (true) return sen;}
+          break;
+        case BREAK:
+          sen = Break();
+          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+          case PTCOMA:
+            jj_consume_token(PTCOMA);
+            break;
+          default:
+            jj_la1[4] = jj_gen;
+            ;
+          }
+                                              {if (true) return sen;}
+          break;
+        case CONTINUE:
+          sen = Continue();
+          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+          case PTCOMA:
+            jj_consume_token(PTCOMA);
+            break;
+          default:
+            jj_la1[5] = jj_gen;
+            ;
+          }
+                                              {if (true) return sen;}
+          break;
+        case RETURN:
+          sen = Return();
+          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+          case PTCOMA:
+            jj_consume_token(PTCOMA);
+            break;
+          default:
+            jj_la1[6] = jj_gen;
+            ;
+          }
+                                              {if (true) return sen;}
+          break;
+        default:
+          jj_la1[9] = jj_gen;
+          if (jj_2_3(3)) {
+            sen = Llamada();
             switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
             case PTCOMA:
               jj_consume_token(PTCOMA);
               break;
             default:
-              jj_la1[8] = jj_gen;
+              jj_la1[7] = jj_gen;
               ;
             }
-                                                  {if (true) return sen;}
-            break;
-          default:
-            jj_la1[10] = jj_gen;
-            jj_consume_token(-1);
-            throw new ParseException();
+                                                            {if (true) return sen;}
+          } else {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case IDENTIFICADOR:
+              sen = AsignarEstructura();
+              switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+              case PTCOMA:
+                jj_consume_token(PTCOMA);
+                break;
+              default:
+                jj_la1[8] = jj_gen;
+                ;
+              }
+                                                      {if (true) return sen;}
+              break;
+            default:
+              jj_la1[10] = jj_gen;
+              jj_consume_token(-1);
+              throw new ParseException();
+            }
           }
         }
       }
+    } catch (ParseException e) {
+            Informacion.agregarError( new ErrorAr("Sintactico", e.getMessage(),  e.currentToken.beginLine, e.currentToken.beginColumn ));
+            Token t;
+            System.out.println(e.toString());
+            do {
+                t = getNextToken();
+            } while (t.kind != PTCOMA && t!=null && t.kind != EOF );
+            {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -197,7 +217,7 @@ public class GramaticaJCC implements GramaticaJCCConstants {
       jj_consume_token(LLAVEA);
       sentencias = Sentencias();
       jj_consume_token(LLAVEC);
-      {if (true) return new Funcion(t.image, parametros, sentencias, token.beginLine, token.beginLine);}
+      {if (true) return new Funcion(t.image, parametros, sentencias, token.beginLine, token.beginColumn);}
     } else if (jj_2_5(3)) {
       t = jj_consume_token(IDENTIFICADOR);
       jj_consume_token(IGUAL);
@@ -208,7 +228,7 @@ public class GramaticaJCC implements GramaticaJCCConstants {
       jj_consume_token(LLAVEA);
       sentencias = Sentencias();
       jj_consume_token(LLAVEC);
-      {if (true) return new Funcion(t.image, parametros, sentencias, token.beginLine, token.beginLine);}
+      {if (true) return new Funcion(t.image, parametros, sentencias, token.beginLine, token.beginColumn);}
     } else {
       jj_consume_token(-1);
       throw new ParseException();
@@ -294,129 +314,139 @@ public class GramaticaJCC implements GramaticaJCCConstants {
 
   final public NodoAst Sentencia() throws ParseException {
     NodoAst sen;
-    if (jj_2_6(3)) {
-      sen = Declaracion();
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case PTCOMA:
-        jj_consume_token(PTCOMA);
-        break;
-      default:
-        jj_la1[15] = jj_gen;
-        ;
-      }
-                                                  {if (true) return sen;}
-    } else {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case IMPRIMIR:
-        sen = Imprimir();
+    try {
+      if (jj_2_6(3)) {
+        sen = Declaracion();
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
         case PTCOMA:
           jj_consume_token(PTCOMA);
           break;
         default:
-          jj_la1[16] = jj_gen;
+          jj_la1[15] = jj_gen;
           ;
         }
-                                                  {if (true) return sen;}
-        break;
-      case SI:
-        sen = Si();
-                                                  {if (true) return sen;}
-        break;
-      case SWITCH:
-        sen = Seleccionar();
-                                                  {if (true) return sen;}
-        break;
-      case WHILE:
-        sen = While();
-                                                  {if (true) return sen;}
-        break;
-      case DO:
-        sen = DoWhile();
+                                                      {if (true) return sen;}
+      } else {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case PTCOMA:
-          jj_consume_token(PTCOMA);
-          break;
-        default:
-          jj_la1[17] = jj_gen;
-          ;
-        }
-                                                  {if (true) return sen;}
-        break;
-      case FOR:
-        sen = For();
-                                                  {if (true) return sen;}
-        break;
-      case BREAK:
-        sen = Break();
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case PTCOMA:
-          jj_consume_token(PTCOMA);
-          break;
-        default:
-          jj_la1[18] = jj_gen;
-          ;
-        }
-                                                  {if (true) return sen;}
-        break;
-      case CONTINUE:
-        sen = Continue();
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case PTCOMA:
-          jj_consume_token(PTCOMA);
-          break;
-        default:
-          jj_la1[19] = jj_gen;
-          ;
-        }
-                                                  {if (true) return sen;}
-        break;
-      case RETURN:
-        sen = Return();
-        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case PTCOMA:
-          jj_consume_token(PTCOMA);
-          break;
-        default:
-          jj_la1[20] = jj_gen;
-          ;
-        }
-                                                  {if (true) return sen;}
-        break;
-      default:
-        jj_la1[23] = jj_gen;
-        if (jj_2_7(3)) {
-          sen = Llamada();
+        case IMPRIMIR:
+          sen = Imprimir();
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
           case PTCOMA:
             jj_consume_token(PTCOMA);
             break;
           default:
-            jj_la1[21] = jj_gen;
+            jj_la1[16] = jj_gen;
             ;
           }
-                                                               {if (true) return sen;}
-        } else {
+                                                      {if (true) return sen;}
+          break;
+        case SI:
+          sen = Si();
+                                                      {if (true) return sen;}
+          break;
+        case SWITCH:
+          sen = Seleccionar();
+                                                      {if (true) return sen;}
+          break;
+        case WHILE:
+          sen = While();
+                                                      {if (true) return sen;}
+          break;
+        case DO:
+          sen = DoWhile();
           switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-          case IDENTIFICADOR:
-            sen = AsignarEstructura();
+          case PTCOMA:
+            jj_consume_token(PTCOMA);
+            break;
+          default:
+            jj_la1[17] = jj_gen;
+            ;
+          }
+                                                      {if (true) return sen;}
+          break;
+        case FOR:
+          sen = For();
+                                                      {if (true) return sen;}
+          break;
+        case BREAK:
+          sen = Break();
+          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+          case PTCOMA:
+            jj_consume_token(PTCOMA);
+            break;
+          default:
+            jj_la1[18] = jj_gen;
+            ;
+          }
+                                                      {if (true) return sen;}
+          break;
+        case CONTINUE:
+          sen = Continue();
+          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+          case PTCOMA:
+            jj_consume_token(PTCOMA);
+            break;
+          default:
+            jj_la1[19] = jj_gen;
+            ;
+          }
+                                                      {if (true) return sen;}
+          break;
+        case RETURN:
+          sen = Return();
+          switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+          case PTCOMA:
+            jj_consume_token(PTCOMA);
+            break;
+          default:
+            jj_la1[20] = jj_gen;
+            ;
+          }
+                                                      {if (true) return sen;}
+          break;
+        default:
+          jj_la1[23] = jj_gen;
+          if (jj_2_7(3)) {
+            sen = Llamada();
             switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
             case PTCOMA:
               jj_consume_token(PTCOMA);
               break;
             default:
-              jj_la1[22] = jj_gen;
+              jj_la1[21] = jj_gen;
               ;
             }
-                                                  {if (true) return sen;}
-            break;
-          default:
-            jj_la1[24] = jj_gen;
-            jj_consume_token(-1);
-            throw new ParseException();
+                                                                   {if (true) return sen;}
+          } else {
+            switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+            case IDENTIFICADOR:
+              sen = AsignarEstructura();
+              switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+              case PTCOMA:
+                jj_consume_token(PTCOMA);
+                break;
+              default:
+                jj_la1[22] = jj_gen;
+                ;
+              }
+                                                      {if (true) return sen;}
+              break;
+            default:
+              jj_la1[24] = jj_gen;
+              jj_consume_token(-1);
+              throw new ParseException();
+            }
           }
         }
       }
+    } catch (ParseException e) {
+        Token t;
+        Informacion.agregarError( new ErrorAr("Sintactico", e.getMessage(),  e.currentToken.beginLine, e.currentToken.beginColumn ));
+        System.out.println(e.toString());
+        do {
+            t = getNextToken();
+        } while (t.kind != PTCOMA && t!=null && t.kind != EOF );
+        {if (true) return null;}
     }
     throw new Error("Missing return statement in function");
   }
@@ -428,7 +458,7 @@ public class GramaticaJCC implements GramaticaJCCConstants {
     t = jj_consume_token(IDENTIFICADOR);
     jj_consume_token(IGUAL);
     e = Expresion();
-                                                          ins =  new DeclaracionAsignacion(t.image, e, token.beginLine, token.beginLine);
+                                                          ins =  new DeclaracionAsignacion(t.image, e, token.beginLine, token.beginColumn);
       {if (true) return ins;}
     throw new Error("Missing return statement in function");
   }
@@ -440,7 +470,7 @@ public class GramaticaJCC implements GramaticaJCCConstants {
     jj_consume_token(PARA);
     e = Expresion();
     jj_consume_token(PARC);
-                                                     ins = new Imprimir(e, token.beginLine, token.beginLine);
+                                                     ins = new Imprimir(e, token.beginLine, token.beginColumn);
       {if (true) return ins;}
     throw new Error("Missing return statement in function");
   }
@@ -477,7 +507,7 @@ public class GramaticaJCC implements GramaticaJCCConstants {
       jj_la1[25] = jj_gen;
       ;
     }
-      {if (true) return new Si(cond, sentencias, sentenciasElse, token.beginLine, token.beginLine);}
+      {if (true) return new Si(cond, sentencias, sentenciasElse, token.beginLine, token.beginColumn);}
     throw new Error("Missing return statement in function");
   }
 
@@ -504,7 +534,7 @@ public class GramaticaJCC implements GramaticaJCCConstants {
       ;
     }
     jj_consume_token(LLAVEC);
-      {if (true) return new Seleccionar(cond, casos, defecto, token.beginLine, token.beginLine);}
+      {if (true) return new Seleccionar(cond, casos, defecto, token.beginLine, token.beginColumn);}
     throw new Error("Missing return statement in function");
   }
 
@@ -542,7 +572,7 @@ public class GramaticaJCC implements GramaticaJCCConstants {
     jj_consume_token(LLAVEA);
     sentencias = Sentencias();
     jj_consume_token(LLAVEC);
-      {if (true) return new While(condicion, sentencias, token.beginLine, token.beginLine);}
+      {if (true) return new While(condicion, sentencias, token.beginLine, token.beginColumn);}
     throw new Error("Missing return statement in function");
   }
 
@@ -557,7 +587,7 @@ public class GramaticaJCC implements GramaticaJCCConstants {
     jj_consume_token(PARA);
     condicion = Expresion();
     jj_consume_token(PARC);
-      {if (true) return new DoWhile(condicion, sentencias, token.beginLine, token.beginLine);}
+      {if (true) return new DoWhile(condicion, sentencias, token.beginLine, token.beginColumn);}
     throw new Error("Missing return statement in function");
   }
 
@@ -574,19 +604,19 @@ public class GramaticaJCC implements GramaticaJCCConstants {
     jj_consume_token(LLAVEA);
     sentencias = Sentencias();
     jj_consume_token(LLAVEC);
-      {if (true) return new For(t.image, estructura, sentencias, token.beginLine, token.beginLine);}
+      {if (true) return new For(t.image, estructura, sentencias, token.beginLine, token.beginColumn);}
     throw new Error("Missing return statement in function");
   }
 
   final public NodoAst Break() throws ParseException {
     jj_consume_token(BREAK);
-      {if (true) return new Break(token.beginLine, token.beginLine);}
+      {if (true) return new Break(token.beginLine, token.beginColumn);}
     throw new Error("Missing return statement in function");
   }
 
   final public NodoAst Continue() throws ParseException {
     jj_consume_token(CONTINUE);
-      {if (true) return new Continue(token.beginLine, token.beginLine);}
+      {if (true) return new Continue(token.beginLine, token.beginColumn);}
     throw new Error("Missing return statement in function");
   }
 
@@ -603,7 +633,7 @@ public class GramaticaJCC implements GramaticaJCCConstants {
       jj_la1[28] = jj_gen;
       ;
     }
-      {if (true) return new Return(ret, token.beginLine, token.beginLine);}
+      {if (true) return new Return(ret, token.beginLine, token.beginColumn);}
     throw new Error("Missing return statement in function");
   }
 
@@ -651,13 +681,13 @@ public class GramaticaJCC implements GramaticaJCCConstants {
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case BRAA:
       accesos = Accesos();
-                           {if (true) return new LlamadaAcceso( new Llamada(t.image, valores, token.beginLine, token.beginLine), accesos, token.beginLine, token.beginLine);}
+                           {if (true) return new LlamadaAcceso( new Llamada(t.image, valores, token.beginLine, token.beginColumn), accesos, token.beginLine, token.beginColumn);}
       break;
     default:
       jj_la1[31] = jj_gen;
       ;
     }
-      {if (true) return new Llamada(t.image, valores, token.beginLine, token.beginLine);}
+      {if (true) return new Llamada(t.image, valores, token.beginLine, token.beginColumn);}
     throw new Error("Missing return statement in function");
   }
 
@@ -666,7 +696,7 @@ public class GramaticaJCC implements GramaticaJCCConstants {
     LinkedList<NodoAcceso> accesos;
     t = jj_consume_token(IDENTIFICADOR);
     accesos = Accesos();
-      {if (true) return new Acceso(t.image, accesos, token.beginLine, token.beginLine);}
+      {if (true) return new Acceso(t.image, accesos, token.beginLine, token.beginColumn);}
     throw new Error("Missing return statement in function");
   }
 
@@ -741,7 +771,7 @@ public class GramaticaJCC implements GramaticaJCCConstants {
     accesos = Accesos();
     jj_consume_token(IGUAL);
     e = Expresion();
-      {if (true) return new AsignarEstructura(t.image, accesos, e, token.beginLine, token.beginLine);}
+      {if (true) return new AsignarEstructura(t.image, accesos, e, token.beginLine, token.beginColumn);}
     throw new Error("Missing return statement in function");
   }
 
@@ -761,7 +791,7 @@ public class GramaticaJCC implements GramaticaJCCConstants {
       ev = Expresion();
       jj_consume_token(DOSPUNTOS);
       ef = Expresion();
-                                                                    e = new Ternario(e, ev, ef, token.beginLine, token.beginLine);
+                                                                    e = new Ternario(e, ev, ef, token.beginLine, token.beginColumn);
       break;
     default:
       jj_la1[33] = jj_gen;
@@ -1208,82 +1238,6 @@ public class GramaticaJCC implements GramaticaJCCConstants {
     finally { jj_save(16, xla); }
   }
 
-  private boolean jj_3_14() {
-    if (jj_scan_token(BRAA)) return true;
-    if (jj_3R_18()) return true;
-    if (jj_scan_token(COMA)) return true;
-    if (jj_scan_token(BRAC)) return true;
-    return false;
-  }
-
-  private boolean jj_3_13() {
-    if (jj_scan_token(BRAA)) return true;
-    if (jj_scan_token(COMA)) return true;
-    if (jj_3R_18()) return true;
-    if (jj_scan_token(BRAC)) return true;
-    return false;
-  }
-
-  private boolean jj_3_12() {
-    if (jj_scan_token(BRAA)) return true;
-    if (jj_3R_18()) return true;
-    if (jj_scan_token(COMA)) return true;
-    if (jj_3R_18()) return true;
-    return false;
-  }
-
-  private boolean jj_3_11() {
-    if (jj_scan_token(BRAA)) return true;
-    if (jj_scan_token(BRAA)) return true;
-    if (jj_3R_18()) return true;
-    if (jj_scan_token(BRAC)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_32() {
-    if (jj_scan_token(IDENTIFICADOR)) return true;
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3R_36()) jj_scanpos = xsp;
-    return false;
-  }
-
-  private boolean jj_3R_28() {
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3_10()) {
-    jj_scanpos = xsp;
-    if (jj_3_11()) {
-    jj_scanpos = xsp;
-    if (jj_3_12()) {
-    jj_scanpos = xsp;
-    if (jj_3_13()) {
-    jj_scanpos = xsp;
-    if (jj_3_14()) return true;
-    }
-    }
-    }
-    }
-    return false;
-  }
-
-  private boolean jj_3_10() {
-    if (jj_scan_token(BRAA)) return true;
-    if (jj_3R_18()) return true;
-    if (jj_scan_token(BRAC)) return true;
-    return false;
-  }
-
-  private boolean jj_3R_20() {
-    if (jj_3R_18()) return true;
-    Token xsp;
-    while (true) {
-      xsp = jj_scanpos;
-      if (jj_3R_27()) { jj_scanpos = xsp; break; }
-    }
-    return false;
-  }
-
   private boolean jj_3R_29() {
     if (jj_3R_32()) return true;
     Token xsp;
@@ -1301,8 +1255,9 @@ public class GramaticaJCC implements GramaticaJCCConstants {
     return false;
   }
 
-  private boolean jj_3R_23() {
-    if (jj_3R_28()) return true;
+  private boolean jj_3R_19() {
+    if (jj_scan_token(IDENTIFICADOR)) return true;
+    if (jj_3R_23()) return true;
     return false;
   }
 
@@ -1316,9 +1271,20 @@ public class GramaticaJCC implements GramaticaJCCConstants {
     return false;
   }
 
-  private boolean jj_3R_19() {
-    if (jj_scan_token(IDENTIFICADOR)) return true;
+  private boolean jj_3R_22() {
     if (jj_3R_23()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_16() {
+    if (jj_scan_token(IDENTIFICADOR)) return true;
+    if (jj_scan_token(PARA)) return true;
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_20()) jj_scanpos = xsp;
+    if (jj_scan_token(PARC)) return true;
+    xsp = jj_scanpos;
+    if (jj_3R_22()) jj_scanpos = xsp;
     return false;
   }
 
@@ -1342,28 +1308,6 @@ public class GramaticaJCC implements GramaticaJCCConstants {
     return false;
   }
 
-  private boolean jj_3R_22() {
-    if (jj_3R_23()) return true;
-    return false;
-  }
-
-  private boolean jj_3_3() {
-    if (jj_3R_16()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_16() {
-    if (jj_scan_token(IDENTIFICADOR)) return true;
-    if (jj_scan_token(PARA)) return true;
-    Token xsp;
-    xsp = jj_scanpos;
-    if (jj_3R_20()) jj_scanpos = xsp;
-    if (jj_scan_token(PARC)) return true;
-    xsp = jj_scanpos;
-    if (jj_3R_22()) jj_scanpos = xsp;
-    return false;
-  }
-
   private boolean jj_3R_69() {
     if (jj_scan_token(PARA)) return true;
     if (jj_3R_18()) return true;
@@ -1378,11 +1322,6 @@ public class GramaticaJCC implements GramaticaJCCConstants {
 
   private boolean jj_3_16() {
     if (jj_3R_19()) return true;
-    return false;
-  }
-
-  private boolean jj_3_2() {
-    if (jj_3R_15()) return true;
     return false;
   }
 
@@ -1401,11 +1340,6 @@ public class GramaticaJCC implements GramaticaJCCConstants {
     return false;
   }
 
-  private boolean jj_3_1() {
-    if (jj_3R_14()) return true;
-    return false;
-  }
-
   private boolean jj_3R_66() {
     if (jj_scan_token(FALSE)) return true;
     return false;
@@ -1413,6 +1347,11 @@ public class GramaticaJCC implements GramaticaJCCConstants {
 
   private boolean jj_3R_65() {
     if (jj_scan_token(TRUE)) return true;
+    return false;
+  }
+
+  private boolean jj_3_3() {
+    if (jj_3R_16()) return true;
     return false;
   }
 
@@ -1465,6 +1404,16 @@ public class GramaticaJCC implements GramaticaJCCConstants {
 
   private boolean jj_3R_62() {
     if (jj_scan_token(ENTERO)) return true;
+    return false;
+  }
+
+  private boolean jj_3_2() {
+    if (jj_3R_15()) return true;
+    return false;
+  }
+
+  private boolean jj_3_1() {
+    if (jj_3R_14()) return true;
     return false;
   }
 
@@ -1725,11 +1674,6 @@ public class GramaticaJCC implements GramaticaJCCConstants {
     return false;
   }
 
-  private boolean jj_3R_33() {
-    if (jj_scan_token(COMA)) return true;
-    return false;
-  }
-
   private boolean jj_3R_27() {
     if (jj_scan_token(COMA)) return true;
     return false;
@@ -1754,8 +1698,18 @@ public class GramaticaJCC implements GramaticaJCCConstants {
     return false;
   }
 
+  private boolean jj_3R_33() {
+    if (jj_scan_token(COMA)) return true;
+    return false;
+  }
+
   private boolean jj_3R_18() {
     if (jj_3R_21()) return true;
+    return false;
+  }
+
+  private boolean jj_3_6() {
+    if (jj_3R_15()) return true;
     return false;
   }
 
@@ -1764,8 +1718,84 @@ public class GramaticaJCC implements GramaticaJCCConstants {
     return false;
   }
 
-  private boolean jj_3_6() {
-    if (jj_3R_15()) return true;
+  private boolean jj_3_14() {
+    if (jj_scan_token(BRAA)) return true;
+    if (jj_3R_18()) return true;
+    if (jj_scan_token(COMA)) return true;
+    if (jj_scan_token(BRAC)) return true;
+    return false;
+  }
+
+  private boolean jj_3_13() {
+    if (jj_scan_token(BRAA)) return true;
+    if (jj_scan_token(COMA)) return true;
+    if (jj_3R_18()) return true;
+    if (jj_scan_token(BRAC)) return true;
+    return false;
+  }
+
+  private boolean jj_3_12() {
+    if (jj_scan_token(BRAA)) return true;
+    if (jj_3R_18()) return true;
+    if (jj_scan_token(COMA)) return true;
+    if (jj_3R_18()) return true;
+    return false;
+  }
+
+  private boolean jj_3_11() {
+    if (jj_scan_token(BRAA)) return true;
+    if (jj_scan_token(BRAA)) return true;
+    if (jj_3R_18()) return true;
+    if (jj_scan_token(BRAC)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_28() {
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3_10()) {
+    jj_scanpos = xsp;
+    if (jj_3_11()) {
+    jj_scanpos = xsp;
+    if (jj_3_12()) {
+    jj_scanpos = xsp;
+    if (jj_3_13()) {
+    jj_scanpos = xsp;
+    if (jj_3_14()) return true;
+    }
+    }
+    }
+    }
+    return false;
+  }
+
+  private boolean jj_3_10() {
+    if (jj_scan_token(BRAA)) return true;
+    if (jj_3R_18()) return true;
+    if (jj_scan_token(BRAC)) return true;
+    return false;
+  }
+
+  private boolean jj_3R_20() {
+    if (jj_3R_18()) return true;
+    Token xsp;
+    while (true) {
+      xsp = jj_scanpos;
+      if (jj_3R_27()) { jj_scanpos = xsp; break; }
+    }
+    return false;
+  }
+
+  private boolean jj_3R_32() {
+    if (jj_scan_token(IDENTIFICADOR)) return true;
+    Token xsp;
+    xsp = jj_scanpos;
+    if (jj_3R_36()) jj_scanpos = xsp;
+    return false;
+  }
+
+  private boolean jj_3R_23() {
+    if (jj_3R_28()) return true;
     return false;
   }
 

@@ -34,7 +34,7 @@ DEC = [0-9]+("."[0-9]+)
 CADENACOMILLASDOBLES = [\"]([^\"\n]|(\\\"))*[\"]
 
 
-IDENTIFICADOR = ([A-Za-z"_"0-9"."])["_""."0-9A-Za-z]*
+IDENTIFICADOR = ([A-Za-z]["_""."0-9A-Za-z]*|["."](["_""."A-Za-z]["_""."0-9A-Za-z]*)?)
 
 
 

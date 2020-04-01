@@ -47,10 +47,12 @@ public class ReporteAst {
             sw.println(ast + " -> " + sens + ";");
             int numero = 2;
             for (NodoAst ins : sentencias) {
-                NodoDot nodo = ins.generarDot(numero);
-                numero = nodo.Numero;
-                sw.println(nodo.Cuerpo);
-                sw.println(sens + " -> " + nodo.Nombre+";");
+                if (ins != null) {
+                    NodoDot nodo = ins.generarDot(numero);
+                    numero = nodo.Numero;
+                    sw.println(nodo.Cuerpo);
+                    sw.println(sens + " -> " + nodo.Nombre + ";");
+                }
             }
 
             sw.println("}");

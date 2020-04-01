@@ -108,7 +108,7 @@ public class AsignarEstructura extends Instruccion {
                                     if (pos.valores.get(0).valor instanceof Integer) {
                                         Lista vec = (Lista) val;
                                         int val_pos = (int) pos.valores.get(0).valor;
-                                        Object nuevo = vec.getPosicionSegundoAcceeso(val_pos - 1);
+                                        Object nuevo = vec.getPosicionSegundoAcceesoSinClon(val_pos - 1);
                                         if (nuevo != null) {
                                             val = nuevo;
                                         } else {

@@ -265,7 +265,7 @@ public class AritSintax extends AbstractJFlexCTokenMaker {
     * Constructor.  This must be here because JFlex does not generate a
     * no-parameter constructor.
     */
-   public RMBSintax() {
+   public AritSintax() {
    }
 
    /**
@@ -456,42 +456,7 @@ public class AritSintax extends AbstractJFlexCTokenMaker {
    * 
    * @exception   java.io.IOException  if any I/O-Error occurs
    */
-  private boolean zzRefill() throws java.io.IOException {
-
-    /* first: make room (if you can) */
-    if (zzStartRead > 0) {
-      System.arraycopy(zzBuffer, zzStartRead,
-                       zzBuffer, 0,
-                       zzEndRead-zzStartRead);
-
-      /* translate stored positions */
-      zzEndRead-= zzStartRead;
-      zzCurrentPos-= zzStartRead;
-      zzMarkedPos-= zzStartRead;
-      zzPushbackPos-= zzStartRead;
-      zzStartRead = 0;
-    }
-
-    /* is the buffer big enough? */
-    if (zzCurrentPos >= zzBuffer.length) {
-      /* if not: blow it up */
-      char newBuffer[] = new char[zzCurrentPos*2];
-      System.arraycopy(zzBuffer, 0, newBuffer, 0, zzBuffer.length);
-      zzBuffer = newBuffer;
-    }
-
-    /* finally: fill the buffer with new input */
-    int numRead = zzReader.read(zzBuffer, zzEndRead,
-                                            zzBuffer.length-zzEndRead);
-
-    if (numRead < 0) {
-      return true;
-    }
-    else {
-      zzEndRead+= numRead;
-      return false;
-    }
-  }
+  
 
     
   /**
@@ -516,15 +481,7 @@ public class AritSintax extends AbstractJFlexCTokenMaker {
    *
    * @param reader   the new input stream 
    */
-  public final void yyreset(java.io.Reader reader) {
-    zzReader = reader;
-    zzAtBOL  = true;
-    zzAtEOF  = false;
-    zzEndRead = zzStartRead = 0;
-    zzCurrentPos = zzMarkedPos = zzPushbackPos = 0;
-    yyline = yychar = yycolumn = 0;
-    zzLexicalState = YYINITIAL;
-  }
+  
 
 
   /**

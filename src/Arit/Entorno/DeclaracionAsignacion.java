@@ -65,9 +65,11 @@ public class DeclaracionAsignacion extends Instruccion {
                     Arreglo ar = (Arreglo) val;
                     val = ar.clone();
                 }
-                Simbolo sim = en.getSimbolo(identificador);
-                sim.valor = val;
-                en.reemplazar(identificador, sim);
+                if (val != null) {
+                    Simbolo sim = en.getSimbolo(identificador);
+                    sim.valor = val;
+                    en.reemplazar(identificador, sim);
+                }
             }
         } catch (Exception e) {
             System.out.println(e);

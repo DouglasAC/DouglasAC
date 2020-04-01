@@ -48,11 +48,13 @@ public class AritIDE extends javax.swing.JFrame {
         Abrir = new javax.swing.JMenuItem();
         Guardar = new javax.swing.JMenuItem();
         GuardarComo = new javax.swing.JMenuItem();
-        NuevaPes = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
         ReporteTabla = new javax.swing.JMenuItem();
         ReporteAst = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        NuevaPes = new javax.swing.JMenuItem();
+        CerrarPestaña = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Arit IDE - 201503935");
@@ -88,18 +90,20 @@ public class AritIDE extends javax.swing.JFrame {
         jMenu1.add(Abrir);
 
         Guardar.setText("Guardar");
+        Guardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                GuardarActionPerformed(evt);
+            }
+        });
         jMenu1.add(Guardar);
 
         GuardarComo.setText("Guardar Como");
-        jMenu1.add(GuardarComo);
-
-        NuevaPes.setText("Nueva Pestaña");
-        NuevaPes.addActionListener(new java.awt.event.ActionListener() {
+        GuardarComo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NuevaPesActionPerformed(evt);
+                GuardarComoActionPerformed(evt);
             }
         });
-        jMenu1.add(NuevaPes);
+        jMenu1.add(GuardarComo);
 
         jMenuBar1.add(jMenu1);
 
@@ -122,9 +126,34 @@ public class AritIDE extends javax.swing.JFrame {
         jMenu2.add(ReporteTabla);
 
         ReporteAst.setText("Reporte Ast");
+        ReporteAst.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ReporteAstActionPerformed(evt);
+            }
+        });
         jMenu2.add(ReporteAst);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Pestaña");
+
+        NuevaPes.setText("Nueva Pestaña");
+        NuevaPes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NuevaPesActionPerformed(evt);
+            }
+        });
+        jMenu3.add(NuevaPes);
+
+        CerrarPestaña.setText("Cerrar Pestaña");
+        CerrarPestaña.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CerrarPestañaActionPerformed(evt);
+            }
+        });
+        jMenu3.add(CerrarPestaña);
+
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -228,6 +257,64 @@ public class AritIDE extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_inicioJCCActionPerformed
 
+    private void CerrarPestañaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarPestañaActionPerformed
+        // TODO add your handling code here:
+        EditorTab.remove(EditorTab.getSelectedComponent());
+    }//GEN-LAST:event_CerrarPestañaActionPerformed
+
+    private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
+        // TODO add your handling code here:
+        Object c = EditorTab.getSelectedComponent();
+        if (c instanceof Editor) {
+            Editor aux = (Editor) c;
+            if (!aux.pathArchivo.equals("")) {
+                if (aux.saveFile()) {
+                    JOptionPane.showMessageDialog(null, "Se guardo el archivo ");
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se guardo el archivo ");
+                }
+            } else {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.showOpenDialog(fileChooser);
+                File arch = fileChooser.getSelectedFile();
+                if (arch != null) {
+                    String ruta = arch.getPath() + "\\" + aux.getFileName();
+                    aux.pathArchivo = ruta;
+                    System.out.println(ruta);
+                    aux.saveFile();
+                }
+            }
+
+        }
+    }//GEN-LAST:event_GuardarActionPerformed
+
+    private void GuardarComoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarComoActionPerformed
+        // TODO add your handling code here:
+        Object c = EditorTab.getSelectedComponent();
+        if (c instanceof Editor) {
+            Editor aux = (Editor) c;
+            String nombre = JOptionPane.showInputDialog("Ingresar nombre del archivo");
+            if (nombre != "") {
+                aux.setFileName(nombre+".arit");
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.showOpenDialog(fileChooser);
+                File arch = fileChooser.getSelectedFile();
+                if (arch != null) {
+                    String ruta = arch.getPath() + "\\" + aux.getFileName();
+                    aux.pathArchivo = ruta;
+                    System.out.println(ruta);
+                    aux.saveFile();
+                }
+            }
+        }
+    }//GEN-LAST:event_GuardarComoActionPerformed
+
+    private void ReporteAstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ReporteAstActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ReporteAstActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -265,6 +352,7 @@ public class AritIDE extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Abrir;
+    private javax.swing.JMenuItem CerrarPestaña;
     private javax.swing.JTextArea Consola;
     private javax.swing.JButton CupFlex;
     private javax.swing.JTabbedPane EditorTab;
@@ -277,6 +365,7 @@ public class AritIDE extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JScrollPane jScrollPane1;

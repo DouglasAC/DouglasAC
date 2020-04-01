@@ -20,6 +20,16 @@ import java.util.LinkedList;
 
 public class GramaticaJCC {
 
+    public void error_skipto(int kind) {
+        ParseException e = generateParseException();  // generate the exception object.
+        System.out.println(e.toString());  // print the error message
+        Token t;
+        //Informacion.agregarError( new ErrorAr("Sintactico", "No se esperaba '" + n +"'", fila,  columna ));
+        do {
+          t = getNextToken();
+        } while (t.kind != kind);
+    }
+
 }
 
 PARSER_END(GramaticaJCC)
@@ -80,7 +90,7 @@ TOKEN : {
     | <AND: "&">
     | <OR: "|">
     | <NOT: "!" >
-    | <IDENTIFICADOR: ["a"-"z","A"-"Z", "_","."] ( ["a"-"z","A"-"Z", "_","."] | ["0"-"9"] )* >
+    | <IDENTIFICADOR: (["a"-"z","A"-"Z"](["a"-"z","A"-"Z","_","."]|["0"-"9"])*|["."](["a"-"z","A"-"Z","_","."](["a"-"z","A"-"Z","_","."]|["0"-"9"] )*)?) >
 }
 
 MORE :
@@ -121,19 +131,29 @@ NodoAst Campo():
     NodoAst sen;
 }
 {
-    LOOKAHEAD(5) sen = DeclararFuncion()           { return sen; }
-    | LOOKAHEAD(3) sen = Declaracion()     (<PTCOMA>)? { return sen; }
-    | sen = Imprimir()      (<PTCOMA>)? { return sen; }
-    | sen = Si()                        { return sen; }
-    | sen = Seleccionar()               { return sen; }
-    | sen = While()                     { return sen; }
-    | sen = DoWhile()       (<PTCOMA>)? { return sen; }
-    | sen = For()                       { return sen; }
-    | sen = Break()         (<PTCOMA>)? { return sen; }
-    | sen = Continue()      (<PTCOMA>)? { return sen; }
-    | sen = Return()        (<PTCOMA>)? { return sen; }
-    | LOOKAHEAD(3) sen = Llamada()        (<PTCOMA>)? { return sen; }
-    | sen = AsignarEstructura()     (<PTCOMA>)? { return sen; }
+    try{
+        LOOKAHEAD(5) sen = DeclararFuncion()           { return sen; }
+        | LOOKAHEAD(3) sen = Declaracion()     (<PTCOMA>)? { return sen; }
+        | sen = Imprimir()      (<PTCOMA>)? { return sen; }
+        | sen = Si()                        { return sen; }
+        | sen = Seleccionar()               { return sen; }
+        | sen = While()                     { return sen; }
+        | sen = DoWhile()       (<PTCOMA>)? { return sen; }
+        | sen = For()                       { return sen; }
+        | sen = Break()         (<PTCOMA>)? { return sen; }
+        | sen = Continue()      (<PTCOMA>)? { return sen; }
+        | sen = Return()        (<PTCOMA>)? { return sen; }
+        | LOOKAHEAD(3) sen = Llamada()        (<PTCOMA>)? { return sen; }
+        | sen = AsignarEstructura()     (<PTCOMA>)? { return sen; }
+        } catch (ParseException e) {
+            Informacion.agregarError( new ErrorAr("Sintactico", e.getMessage(),  e.currentToken.beginLine, e.currentToken.beginColumn ));
+            Token t;
+            System.out.println(e.toString());
+            do {
+                t = getNextToken();
+            } while (t.kind != PTCOMA && t!=null && t.kind != EOF );
+            return null;
+        }
 }
 
 NodoAst DeclararFuncion():
@@ -144,9 +164,9 @@ NodoAst DeclararFuncion():
 }
 {
     LOOKAHEAD(3) t = <IDENTIFICADOR> <IGUAL> <FUNCTION> <PARA> parametros = Parametros() <PARC> <LLAVEA> sentencias = Sentencias() <LLAVEC>
-    { return new Funcion(t.image, parametros, sentencias, token.beginLine, token.beginLine);  }
+    { return new Funcion(t.image, parametros, sentencias, token.beginLine, token.beginColumn);  }
     | LOOKAHEAD(3) t = <IDENTIFICADOR> <IGUAL> <PARA> parametros = Parametros() <PARC> <FLECHA> <LLAVEA> sentencias = Sentencias() <LLAVEC>
-    { return new Funcion(t.image, parametros, sentencias, token.beginLine, token.beginLine);  }
+    { return new Funcion(t.image, parametros, sentencias, token.beginLine, token.beginColumn);  }
 }
 
 LinkedList<Parametro> Parametros():
@@ -185,18 +205,28 @@ NodoAst Sentencia():
     NodoAst sen;
 }
 {   
-    LOOKAHEAD(3) sen = Declaracion()(<PTCOMA>)? { return sen; }
-    | sen = Imprimir()              (<PTCOMA>)? { return sen; }
-    | sen = Si()                                { return sen; }
-    | sen = Seleccionar()                       { return sen; }
-    | sen = While()                             { return sen; }
-    | sen = DoWhile()               (<PTCOMA>)? { return sen; }
-    | sen = For()                               { return sen; }
-    | sen = Break()                 (<PTCOMA>)? { return sen; }
-    | sen = Continue()              (<PTCOMA>)? { return sen; }
-    | sen = Return()                (<PTCOMA>)? { return sen; }
-    | LOOKAHEAD(3) sen = Llamada()               (<PTCOMA>)? { return sen; }
-    | sen = AsignarEstructura()     (<PTCOMA>)? { return sen; }
+    try{
+        LOOKAHEAD(3) sen = Declaracion()(<PTCOMA>)? { return sen; }
+        | sen = Imprimir()              (<PTCOMA>)? { return sen; }
+        | sen = Si()                                { return sen; }
+        | sen = Seleccionar()                       { return sen; }
+        | sen = While()                             { return sen; }
+        | sen = DoWhile()               (<PTCOMA>)? { return sen; }
+        | sen = For()                               { return sen; }
+        | sen = Break()                 (<PTCOMA>)? { return sen; }
+        | sen = Continue()              (<PTCOMA>)? { return sen; }
+        | sen = Return()                (<PTCOMA>)? { return sen; }
+        | LOOKAHEAD(3) sen = Llamada()               (<PTCOMA>)? { return sen; }
+        | sen = AsignarEstructura()     (<PTCOMA>)? { return sen; }
+    }catch (ParseException e) {
+        Token t;
+        Informacion.agregarError( new ErrorAr("Sintactico", e.getMessage(),  e.currentToken.beginLine, e.currentToken.beginColumn ));
+        System.out.println(e.toString());
+        do {
+            t = getNextToken();
+        } while (t.kind != PTCOMA && t!=null && t.kind != EOF );
+        return null;
+    }
 }
 
 NodoAst Declaracion():
@@ -206,7 +236,7 @@ NodoAst Declaracion():
     Token t;
 }
 {
-    t = <IDENTIFICADOR> <IGUAL> e = Expresion()         { ins =  new DeclaracionAsignacion(t.image, e, token.beginLine, token.beginLine); }
+    t = <IDENTIFICADOR> <IGUAL> e = Expresion()         { ins =  new DeclaracionAsignacion(t.image, e, token.beginLine, token.beginColumn); }
     { return ins; }
 }
 
@@ -216,7 +246,7 @@ NodoAst Imprimir():
     Expresion e;
 }
 {
-    <IMPRIMIR> <PARA> e = Expresion() <PARC>       { ins = new Imprimir(e, token.beginLine, token.beginLine); }
+    <IMPRIMIR> <PARA> e = Expresion() <PARC>       { ins = new Imprimir(e, token.beginLine, token.beginColumn); }
     { return ins; }
 }
 
@@ -233,7 +263,7 @@ NodoAst Si():
         LOOKAHEAD(2) <SINO> ifElse = Si()              { sentenciasElse = new LinkedList<NodoAst>(); sentenciasElse.add(ifElse); }
         | LOOKAHEAD(2) <SINO> <LLAVEA> sentenciasElse = Sentencias() <LLAVEC>
     )?
-    { return new Si(cond, sentencias, sentenciasElse, token.beginLine, token.beginLine); }
+    { return new Si(cond, sentencias, sentenciasElse, token.beginLine, token.beginColumn); }
 }
 
 NodoAst Seleccionar():
@@ -247,7 +277,7 @@ NodoAst Seleccionar():
     <SWITCH> <PARA> cond = Expresion() <PARC> <LLAVEA> casos = Casos() 
     ( <DEFECTO> <DOSPUNTOS> sentenciasDefault = Sentencias() { defecto = new Caso(null, sentenciasDefault); } )?
     <LLAVEC>
-    { return new Seleccionar(cond, casos, defecto, token.beginLine, token.beginLine); }
+    { return new Seleccionar(cond, casos, defecto, token.beginLine, token.beginColumn); }
 }
 
 LinkedList<Caso> Casos():
@@ -268,7 +298,7 @@ NodoAst While():
 }
 {
     <WHILE> <PARA> condicion = Expresion() <PARC> <LLAVEA> sentencias = Sentencias() <LLAVEC> 
-    { return new While(condicion, sentencias, token.beginLine, token.beginLine); }
+    { return new While(condicion, sentencias, token.beginLine, token.beginColumn); }
 }
 
 NodoAst DoWhile():
@@ -278,7 +308,7 @@ NodoAst DoWhile():
 }
 {
     <DO> <LLAVEA> sentencias = Sentencias() <LLAVEC> <WHILE> <PARA> condicion = Expresion() <PARC>
-    { return new DoWhile(condicion, sentencias, token.beginLine, token.beginLine); }
+    { return new DoWhile(condicion, sentencias, token.beginLine, token.beginColumn); }
 }
   
 NodoAst For():
@@ -289,7 +319,7 @@ NodoAst For():
 }
 {
     <FOR> <PARA> t = <IDENTIFICADOR> <IN> estructura = Expresion() <PARC> <LLAVEA> sentencias = Sentencias() <LLAVEC>
-    { return new For(t.image, estructura, sentencias, token.beginLine, token.beginLine); }
+    { return new For(t.image, estructura, sentencias, token.beginLine, token.beginColumn); }
 }
 
 NodoAst Break():
@@ -297,7 +327,7 @@ NodoAst Break():
 }
 {
     <BREAK>
-    { return new Break(token.beginLine, token.beginLine); }
+    { return new Break(token.beginLine, token.beginColumn); }
 }
 
 NodoAst Continue():
@@ -305,7 +335,7 @@ NodoAst Continue():
 }
 {
     <CONTINUE>
-    { return new Continue(token.beginLine, token.beginLine); }
+    { return new Continue(token.beginLine, token.beginColumn); }
 }
 
 NodoAst Return():
@@ -314,7 +344,7 @@ NodoAst Return():
 }
 {
     <RETURN> ( <PARA> ret = Expresion() <PARC> )?
-    { return new Return(ret, token.beginLine, token.beginLine); }
+    { return new Return(ret, token.beginLine, token.beginColumn); }
 }
 
 Expresion Llamada():
@@ -326,8 +356,8 @@ Expresion Llamada():
 }
 {
     t = <IDENTIFICADOR> <PARA> ( e = Expresion() { valores.add(e); } ( <COMA> e = Expresion() { valores.add(e); } )* )? <PARC>
-    (accesos = Accesos() { return new LlamadaAcceso( new Llamada(t.image, valores, token.beginLine, token.beginLine), accesos, token.beginLine, token.beginLine); } )?
-    { return new Llamada(t.image, valores, token.beginLine, token.beginLine); }
+    (accesos = Accesos() { return new LlamadaAcceso( new Llamada(t.image, valores, token.beginLine, token.beginColumn), accesos, token.beginLine, token.beginColumn); } )?
+    { return new Llamada(t.image, valores, token.beginLine, token.beginColumn); }
 }
 
 Expresion Acceso():
@@ -337,7 +367,7 @@ Expresion Acceso():
 }
 {
     t = <IDENTIFICADOR> accesos = Accesos()
-    { return new Acceso(t.image, accesos, token.beginLine, token.beginLine); }
+    { return new Acceso(t.image, accesos, token.beginLine, token.beginColumn); }
 }
 
 LinkedList<NodoAcceso> Accesos():
@@ -371,7 +401,7 @@ NodoAst AsignarEstructura():
 }
 {
     t = <IDENTIFICADOR> accesos = Accesos() <IGUAL> e = Expresion()
-    { return new AsignarEstructura(t.image, accesos, e, token.beginLine, token.beginLine); }
+    { return new AsignarEstructura(t.image, accesos, e, token.beginLine, token.beginColumn); }
 }
 
 Expresion Expresion() :
@@ -390,7 +420,7 @@ Expresion ExpresionTernario() :
 }
 {
     e = ExpresionOr() ( 
-    <TERNARIO> ev = Expresion() <DOSPUNTOS> ef = Expresion()      { e = new Ternario(e, ev, ef, token.beginLine, token.beginLine); }
+    <TERNARIO> ev = Expresion() <DOSPUNTOS> ef = Expresion()      { e = new Ternario(e, ev, ef, token.beginLine, token.beginColumn); }
     )?
     { return e; } 
 }

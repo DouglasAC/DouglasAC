@@ -3,14 +3,23 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/AnalizadorFlCu/LexicoArit</file>
-            <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/Estructuras/Vector.java</file>
+            <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/ValorImplicito/Ternario.java</file>
             <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/Estructuras/Lista.java</file>
-            <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/Estructuras/Matris.java</file>
             <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/AnalizadorJCC/AnalizadorJCC.jj</file>
+            <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/AnalizadorJCC/GramaticaJCC.java</file>
+            <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/Ciclos/While.java</file>
+            <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/Ciclos/For.java</file>
+            <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/ControlDeFlujo/Seleccionar.java</file>
+            <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/Entorno/DeclaracionAsignacion.java</file>
+            <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/Analizador.java</file>
+            <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/AnalizadorFlCu/LexicoArit</file>
             <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/AnalizadorFlCu/SintacticoArit</file>
+            <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/ControlDeFlujo/Si.java</file>
             <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/AritIDE/AritIDE.java</file>
             <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/ValorImplicito/Operacion.java</file>
+            <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/ValorImplicito/Acceso.java</file>
+            <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/Entorno/AsignarEstructura.java</file>
+            <file>file:/C:/Users/ddani/Documents/OLC2/ProyectoArit/src/Arit/Estructuras/Arreglo.java</file>
         </group>
     </open-files>
 </project-private>

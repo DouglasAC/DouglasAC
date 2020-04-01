@@ -83,7 +83,7 @@ public class Lineas extends Funcion {
 
                                 for (int x = 0; x < mat.getColumna(); x++) {
                                     for (int y = 0; y < mat.getFila(); y++) {
-                                        valores.add(new Nodo(mat.valores[y][x]));
+                                        valores.add(mat.valores[y][x]);
                                     }
                                 }
                             }
@@ -131,13 +131,13 @@ public class Lineas extends Funcion {
                             if (!esInt) {
                                 XYSeries datos = new XYSeries("Datos");
                                 for (int x = 0; x < valores.size(); x++) {
-                                    Object val = valores.get(x);
+                                    Object val = valores.get(x).valor;
                                     if (val instanceof Integer) {
                                         datos.add((x + 1), (int) val);
                                     } else if (val instanceof Double) {
                                         datos.add((x + 1), (double) val);
                                     } else {
-                                        Informacion.Informacion.agregarError(new ErrorAr("Semantico", "Los valores de la grafica debeb ser numericos", this.fila, this.columna));
+                                        Informacion.Informacion.agregarError(new ErrorAr("Semantico", "Los valores de la grafica deben ser numericos", this.fila, this.columna));
                                         return null;
                                     }
                                 }
@@ -153,7 +153,7 @@ public class Lineas extends Funcion {
                                 XYItemLabelGenerator xy = new StandardXYItemLabelGenerator();
                                 xylineandshaperenderer.setBaseItemLabelGenerator(xy);
                                 xylineandshaperenderer.setBaseItemLabelsVisible(true);
-                                if (tval.equalsIgnoreCase("l")) {
+                                if (tval.equalsIgnoreCase("i")) {
                                     xylineandshaperenderer.setBaseShapesVisible(false);
                                 } else if (tval.equalsIgnoreCase("p")) {
                                     xylineandshaperenderer.setBaseLinesVisible(false);
@@ -211,14 +211,14 @@ public class Lineas extends Funcion {
 
                                 XYSeries datos = new XYSeries("Datos");
                                 for (int x = 0; x < valores.size(); x++) {
-                                    Object val = valores.get(x);
+                                    Object val = valores.get(x).valor;
                                     double val_num = 0.0;
                                     if (val instanceof Integer) {
                                         val_num = (double) ((int) val);
                                     } else if (val instanceof Double) {
                                         val_num = (double) val;
                                     } else {
-                                        Informacion.Informacion.agregarError(new ErrorAr("Semantico", "Los valores de la grafica debeb ser numericos", this.fila, this.columna));
+                                        Informacion.Informacion.agregarError(new ErrorAr("Semantico", "Los valores de la grafica deben ser numericos", this.fila, this.columna));
                                         return null;
                                     }
                                     if (!noMin && !noMax) {

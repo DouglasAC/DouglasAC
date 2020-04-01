@@ -7,7 +7,10 @@ package AritIDE.Editor;
 
 import java.awt.BorderLayout;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import javax.swing.JOptionPane;
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -84,6 +87,10 @@ public class Editor extends javax.swing.JPanel {
         return fileName;
     }
 
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public void ReadFile() {
         try {
             FileReader file = new FileReader(this.pathArchivo);
@@ -115,6 +122,19 @@ public class Editor extends javax.swing.JPanel {
         } catch (Exception e) {
         }
         return "";
+    }
+    
+    public Boolean saveFile() {
+        File f = new File(this.pathArchivo);
+        try {
+            String text = this.areaEdicion.getText();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(f));
+            writer.write(text);
+            writer.close();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al guardar archivo: " + this.pathArchivo + " | " + e.getMessage());
+        }
+        return true;
     }
     
     /**

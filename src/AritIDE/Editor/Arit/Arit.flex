@@ -172,8 +172,8 @@ Digit                     = ([0-9])
 AnyCharacterButApostropheOrBackSlash   = ([^\\'])
 AnyCharacterButDoubleQuoteOrBackSlash   = ([^\\\"\n])
 NonSeparator                  = ([^\t\f\r\n\ \(\)\{\}\[\]\;\,\.\=\>\<\!\~\?\:\+\-\*\/\&\|\^\%\"\']|"#"|"\\")
-IdentifierStart               = ({Letter}|"_")
-IdentifierPart                  = ({IdentifierStart}|{Digit})
+IdentifierStart               = ({Letter}|".")
+IdentifierPart                  = ({IdentifierStart}|{Digit}|["_"]|["."])
 WhiteSpace            = ([ \t\f]+)
 
 CharLiteral               = ([\']({AnyCharacterButApostropheOrBackSlash})*[\'])
@@ -183,11 +183,12 @@ StringLiteral            = ([\"]({AnyCharacterButDoubleQuoteOrBackSlash})*[\"])
 UnclosedStringLiteral      = ([\"]([\\].|[^\\\"])*[^\"]?)
 ErrorStringLiteral         = ({UnclosedStringLiteral}[\"])
 
-MLCBegin               = "#$"
-MLCEnd               = "$#"
-LineCommentBegin         = "##"
+MLCBegin               = "#*"
+MLCEnd               = "*#"
+LineCommentBegin         = "#"
 
 IntegerLiteral         = ({Digit}+)
+DoubleLiteral         = ({Digit}+ ["."] {Digit}+)
 ErrorNumberFormat         = (({IntegerLiteral}){NonSeparator}+)
 
 Separator               = ([\(\)\{\}\[\]])
@@ -202,25 +203,45 @@ Identifier            = (\${IdentifierStart}{IdentifierPart}*)
 <YYINITIAL> {
 
    /* Keywords */
-   "zro" |
-   "ent" |
-   "chr"|
-   "dec"|
-   "bul"|
-   "if"|
-   "while"|
-   "for"|
-   "repeat"|
+   "if" |
+   "else" |
    "switch"|
    "case"|
    "default"|
-   "romper"|
-   "siga"|
-   "definit" |
-   "fusion"|
-   "importar"|
-   "regreasr"|
-   "when"
+   "break"|
+   "while"|
+   "for"|
+   "do"|
+   "continue"|
+   "return"|
+   "in"|
+   "function"|
+   "print"|
+   "list" |
+   "array"|
+   "matrix"|
+   "list"|
+   "c" |
+   "typeof"|
+   "length" |
+   "ncol"|
+   "nrow"|
+   "stringlength"|
+   "remove"|
+   "tolowercase" |
+   "touppercase"|
+   "trunk"|
+   "round"|
+   "mean"|
+   "mode" |
+   "median"|
+   "pie"|
+   "barplot"|
+   "plot"|
+   "hist" |
+   "true"|
+   "false"|
+   "null"  
        { addToken(Token.RESERVED_WORD); }
 
   
@@ -246,12 +267,13 @@ Identifier            = (\${IdentifierStart}{IdentifierPart}*)
    {Separator2}            { addToken(Token.IDENTIFIER); }
 
    /* Operators. */
-   "+" | "-" | "*" | "/" | "^" | "%" | "++"|
+   "+" | "-" | "*" | "/" | "^" | "%%" | "++"|
    "--"| "==" | "!=" | "<"| ">" | "<=" | ">="|
-   "&&" | "||" | "!" | "="   { addToken(Token.OPERATOR); }
+   "&" | "|" | "!" | "="   { addToken(Token.OPERATOR); }
 
    /* Numbers */
    {IntegerLiteral}         { addToken(Token.LITERAL_NUMBER_DECIMAL_INT); }
+   {DoubleLiteral}          { addToken(Token.LITERAL_NUMBER_DECIMAL_INT); }
    {ErrorNumberFormat}         { addToken(Token.ERROR_NUMBER_FORMAT); }
 
    /* Ended with a line not in a string or comment. */

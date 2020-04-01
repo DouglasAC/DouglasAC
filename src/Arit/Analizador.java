@@ -9,6 +9,9 @@ import Arit.AltaAbstraccion.Expresion;
 import Arit.AltaAbstraccion.Instruccion;
 import Arit.AltaAbstraccion.NodoAst;
 import Arit.AnalizadorJCC.GramaticaJCC;
+import Arit.CambioFlujo.Break;
+import Arit.CambioFlujo.Continue;
+import Arit.CambioFlujo.Return;
 import Arit.Entorno.Entorno;
 import Arit.Entorno.Funcion;
 import Arit.Entorno.Parametro;
@@ -57,6 +60,8 @@ public class Analizador {
 
     public void Analizar() {
         try {
+            Informacion.ResetErrores();
+            Informacion.ResetSimbolos();
             Arit.AnalizadorFlCu.SintacticoArit pars;
             pars = new Arit.AnalizadorFlCu.SintacticoArit(new Arit.AnalizadorFlCu.LexicoArit(new StringReader(texto)));
             pars.parse();
@@ -69,6 +74,8 @@ public class Analizador {
 
     public void AnalizarJCC() {
         try {
+            Informacion.ResetErrores();
+            Informacion.ResetSimbolos();
             GramaticaJCC gram = new GramaticaJCC(new BufferedReader(new StringReader(texto)));
             LinkedList<NodoAst> AST = gram.Inicio();
             Ejecutar(AST);
@@ -79,8 +86,6 @@ public class Analizador {
 
     public void Ejecutar(LinkedList<NodoAst> sentencias) {
         try {
-            Informacion.ResetErrores();
-            Informacion.ResetSimbolos();
             LinkedList<NodoAst> AST = sentencias;
             Entorno en = new Entorno(null);
             en.SetNombre("global");
@@ -110,8 +115,14 @@ public class Analizador {
                     } else if (ins instanceof Instruccion) {
                         try {
 
-                            ((Instruccion) ins).ejecutar(en);
-
+                            Object res = ((Instruccion) ins).ejecutar(en);
+                            if (res instanceof Return) {
+                                Informacion.agregarError(new ErrorAr("Semantico", "Return esta en global", ins.fila, ins.columna));
+                            } else if (res instanceof Break) {
+                                Informacion.agregarError(new ErrorAr("Semantico", "Break esta en global", ins.fila, ins.columna));
+                            } else if (res instanceof Continue) {
+                                Informacion.agregarError(new ErrorAr("Semantico", "Continue esta en global", ins.fila, ins.columna));
+                            }
                         } catch (Exception e) {
                             System.out.println("Error2 o " + e);
                             Informacion.agregarError(new ErrorAr("Semantico", "Error en ejecutar una instruccion global: ", ins.fila, ins.columna));
@@ -120,8 +131,14 @@ public class Analizador {
                         try {
 
                             Expresion in = (Expresion) ins;
-                            Object result = in.getValorImplicito(en);
-
+                            Object res = in.getValorImplicito(en);
+                            if (res instanceof Return) {
+                                Informacion.agregarError(new ErrorAr("Semantico", "Return esta en global", ins.fila, ins.columna));
+                            } else if (res instanceof Break) {
+                                Informacion.agregarError(new ErrorAr("Semantico", "Break esta en global", ins.fila, ins.columna));
+                            } else if (res instanceof Continue) {
+                                Informacion.agregarError(new ErrorAr("Semantico", "Continue esta en global", ins.fila, ins.columna));
+                            }
                         } catch (Exception e) {
                             System.out.println("Error2 o " + e);
                             Informacion.agregarError(new ErrorAr("Semantico", "Error en ejecutar una expresion global: ", ins.fila, ins.columna));
@@ -210,8 +227,8 @@ public class Analizador {
         Parametro His_xl = new Parametro("parametro&&xlabels&&histo01210", null);
         Parametro His_m = new Parametro("parametro&&main&&histo01210", null);
         parametrosHis.add(His_v);
-        parametrosHis.add(His_xl);
         parametrosHis.add(His_m);
+        parametrosHis.add(His_xl);
         Histograma fun_His = new Histograma("hist", parametrosHis, new LinkedList<>(), 0, 0);
         en.agregarFuncion("hist", fun_His);
 
