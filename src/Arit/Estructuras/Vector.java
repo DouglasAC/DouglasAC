@@ -57,7 +57,10 @@ public class Vector implements Cloneable {
 
     public Vector getPosicion(int pos) {
         Vector nuevo = new Vector(this.tipo);
-        if (pos < this.tamaño() && pos >= 0) {
+        if ( pos >= 0) {
+            if (pos > this.tamaño() - 1) {
+                llenarHasta(pos);
+            }
             nuevo.agregarFinal(this.valores.get(pos));
             return nuevo;
         } else {

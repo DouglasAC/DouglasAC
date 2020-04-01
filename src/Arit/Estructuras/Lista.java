@@ -37,7 +37,7 @@ public class Lista implements Cloneable {
             if (pos > this.tamaño() - 1) {
                 llenarHasta(pos);
             }
-            this.valores.get(pos).valor =  val;
+            this.valores.get(pos).valor = val;
         } else {
             Informacion.Informacion.agregarError(new ErrorAr("Semantico", "La posicion debe ser mayor a 0", fila, columna));
         }
@@ -51,8 +51,6 @@ public class Lista implements Cloneable {
 
         }
     }
-    
-    
 
     public void setValores(ArrayList<Nodo> valores) {
         this.valores = valores;
@@ -60,7 +58,10 @@ public class Lista implements Cloneable {
 
     public Nodo getPosicion(int pos) throws CloneNotSupportedException {
         Lista l = (Lista) this.clone();
-        if (pos < this.tamaño() && pos >= 0) {
+        if ( pos >= 0) {
+            if (pos > this.tamaño() - 1) {
+                llenarHasta(pos);
+            }
             return l.valores.get(pos);
         } else {
             return null;
@@ -68,7 +69,10 @@ public class Lista implements Cloneable {
     }
 
     public Nodo getPosicionSinClon(int pos) {
-        if (pos < this.tamaño() && pos >= 0) {
+        if (pos >= 0) {
+            if (pos > this.tamaño() - 1) {
+                llenarHasta(pos);
+            }
             return this.valores.get(pos);
         } else {
             return null;
@@ -77,7 +81,10 @@ public class Lista implements Cloneable {
 
     public Object getPosicionSegundoAcceeso(int pos) throws CloneNotSupportedException {
         Lista l = (Lista) this.clone();
-        if (pos < this.tamaño() && pos >= 0) {
+        if (pos >= 0) {
+            if (pos > this.tamaño() - 1) {
+                llenarHasta(pos);
+            }
             Lista nueva = new Lista();
             nueva.agregarFinal(l.valores.get(pos));
             return nueva;
@@ -87,7 +94,10 @@ public class Lista implements Cloneable {
     }
 
     public Object getPosicionSegundoAcceesoSinClon(int pos) {
-        if (pos < this.tamaño() && pos >= 0) {
+        if (pos >= 0) {
+            if (pos > this.tamaño() - 1) {
+                llenarHasta(pos);
+            }
             Lista nueva = new Lista();
             nueva.agregarFinal(this.valores.get(pos));
             return nueva;
@@ -107,7 +117,7 @@ public class Lista implements Cloneable {
             //clone.setDob((Date) this.getDob().clone());
             ArrayList<Nodo> objetos = new ArrayList<Nodo>();
             for (Nodo o : this.valores) {
-                objetos.add((Nodo)o.clone());
+                objetos.add((Nodo) o.clone());
             }
             clone.setValores(objetos);
             /*clone = (Lista) super.clone();
