@@ -47,7 +47,6 @@ terminal String NOT,OR,AND;
 terminal String ENTERO;
 terminal String DECIMAL;
 terminal String CADENA;
-terminal String IMPRIMIR;
 terminal String IGUAL;
 terminal String POTENCIA;
 terminal String IDENTIFICADOR;
@@ -67,7 +66,6 @@ non terminal LinkedList<NodoAst> SENTENCIAS;
 non terminal NodoAst SENTENCIA;
 non terminal NodoAst SENTENCIA_DECLARACION;
 non terminal NodoAst SENTENCIA_ASIGNACION;
-non terminal NodoAst SENTENCIA_IMPRIMIR;
 
 non terminal Expresion EXPRESION;
 non terminal Expresion EXPRESION_ARITMETICA;
@@ -94,13 +92,11 @@ non terminal Expresion SENTENCIA_ACCESO;
 non terminal LinkedList<NodoAcceso> LISTA_ACCESOS;
 non terminal NodoAcceso ACCESOS;
 
-non terminal Expresion SENTENCIA_ACCESO_ARREGLO;
 non terminal NodoAst SENTENCIA_WHILE;
 non terminal NodoAst SENTENCIA_DOWHILE;
 non terminal NodoAst SENTENCIA_FOR;
 
 
-non terminal Expresion LLAMADA_ACCESO_ARREGLO;
 non terminal LinkedList<Expresion> LISTA_LLAMADA; 
 non terminal Expresion ELEMENTO_LLAMADA;
 non terminal Expresion OPERADOR_TERNARIO;
@@ -205,8 +201,6 @@ ELEMENTO_LLAMADA::=
 SENTENCIA::=
     SENTENCIA_DECLARACION:a PTCOMA      {: RESULT = a; :}
     | SENTENCIA_DECLARACION:a           {: RESULT = a; :}
-    | SENTENCIA_IMPRIMIR:a PTCOMA       {: RESULT = a; :}
-    | SENTENCIA_IMPRIMIR:a              {: RESULT = a; :}
     | SENTENCIA_SI:a                    {: RESULT = a; :}
     | SENTENCIA_SELECCIONAR:a           {: RESULT = a; :}
     | SENTENCIA_DETENER:a PTCOMA        {: RESULT = a; :}
@@ -266,10 +260,6 @@ SENTENCIA_DETENER::=
 
 SENTENCIA_CONTINUE::=
     CONTINUE:a              {: RESULT = new Continue(aleft, aright); :}
-;
-
-SENTENCIA_IMPRIMIR::=
-    IMPRIMIR:a PARIZQ EXPRESION:b PARDER      {: RESULT = new Imprimir(b,aleft,aright); :}
 ;
 
 SENTENCIA_WHILE::=

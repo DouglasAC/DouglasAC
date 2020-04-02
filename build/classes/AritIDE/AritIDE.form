@@ -68,23 +68,23 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Pesta&#xf1;a"/>
+            <Property name="text" type="java.lang.String" value="Pes"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="NuevaPes">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Nueva Pesta&#xf1;a"/>
+                <Property name="text" type="java.lang.String" value="Nueva Pes"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="NuevaPesActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="CerrarPesta&#xf1;a">
+            <MenuItem class="javax.swing.JMenuItem" name="CerrarPes">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Cerrar Pesta&#xf1;a"/>
+                <Property name="text" type="java.lang.String" value="Cerrar Pes"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CerrarPesta&#xf1;aActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="CerrarPesActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

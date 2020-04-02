@@ -46,7 +46,6 @@ SKIP : {
 TOKEN : {
       <ENTERO: (["0"-"9"])+>
     | <DECIMAL: (["0"-"9"])+"."(["0"-"9"])+>
-    | <IMPRIMIR: "Print">
     | <SI: "if">
     | <SINO: "else">
     | <TRUE: "true">
@@ -134,7 +133,6 @@ NodoAst Campo():
     try{
         LOOKAHEAD(5) sen = DeclararFuncion()           { return sen; }
         | LOOKAHEAD(3) sen = Declaracion()     (<PTCOMA>)? { return sen; }
-        | sen = Imprimir()      (<PTCOMA>)? { return sen; }
         | sen = Si()                        { return sen; }
         | sen = Seleccionar()               { return sen; }
         | sen = While()                     { return sen; }
@@ -207,7 +205,6 @@ NodoAst Sentencia():
 {   
     try{
         LOOKAHEAD(3) sen = Declaracion()(<PTCOMA>)? { return sen; }
-        | sen = Imprimir()              (<PTCOMA>)? { return sen; }
         | sen = Si()                                { return sen; }
         | sen = Seleccionar()                       { return sen; }
         | sen = While()                             { return sen; }
@@ -240,15 +237,6 @@ NodoAst Declaracion():
     { return ins; }
 }
 
-NodoAst Imprimir():
-{
-    NodoAst ins;
-    Expresion e;
-}
-{
-    <IMPRIMIR> <PARA> e = Expresion() <PARC>       { ins = new Imprimir(e, token.beginLine, token.beginColumn); }
-    { return ins; }
-}
 
 NodoAst Si():
 {

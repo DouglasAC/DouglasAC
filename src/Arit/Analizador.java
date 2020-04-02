@@ -22,6 +22,7 @@ import Arit.OperacionersPrimitivas.Graficas.Barras;
 import Arit.OperacionersPrimitivas.Graficas.Histograma;
 import Arit.OperacionersPrimitivas.Graficas.Lineas;
 import Arit.OperacionersPrimitivas.Graficas.Pie;
+import Arit.OperacionersPrimitivas.Imprimir;
 import Arit.OperacionersPrimitivas.Length;
 import Arit.OperacionersPrimitivas.List;
 import Arit.OperacionersPrimitivas.Matrix;
@@ -157,6 +158,9 @@ public class Analizador {
     }
 
     public void ponerFuncionesPrimitivas(Entorno en) {
+        //-- funcion imprimir
+        Imprimir fun_print = new Imprimir("print", new LinkedList<>(), new LinkedList<>(), 0, 0);
+        en.agregarFuncion("print", fun_print);
         //-- funcion list
         List fun_list = new List("list", new LinkedList<>(), new LinkedList<>(), 0, 0);
         en.agregarFuncion("list", fun_list);

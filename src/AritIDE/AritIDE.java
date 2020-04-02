@@ -54,7 +54,7 @@ public class AritIDE extends javax.swing.JFrame {
         ReporteAst = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         NuevaPes = new javax.swing.JMenuItem();
-        CerrarPestaña = new javax.swing.JMenuItem();
+        CerrarPes = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Arit IDE - 201503935");
@@ -135,9 +135,9 @@ public class AritIDE extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Pestaña");
+        jMenu3.setText("Pes");
 
-        NuevaPes.setText("Nueva Pestaña");
+        NuevaPes.setText("Nueva Pes");
         NuevaPes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 NuevaPesActionPerformed(evt);
@@ -145,13 +145,13 @@ public class AritIDE extends javax.swing.JFrame {
         });
         jMenu3.add(NuevaPes);
 
-        CerrarPestaña.setText("Cerrar Pestaña");
-        CerrarPestaña.addActionListener(new java.awt.event.ActionListener() {
+        CerrarPes.setText("Cerrar Pes");
+        CerrarPes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                CerrarPestañaActionPerformed(evt);
+                CerrarPesActionPerformed(evt);
             }
         });
-        jMenu3.add(CerrarPestaña);
+        jMenu3.add(CerrarPes);
 
         jMenuBar1.add(jMenu3);
 
@@ -201,7 +201,7 @@ public class AritIDE extends javax.swing.JFrame {
 
     private void NuevaPesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NuevaPesActionPerformed
         // TODO add your handling code here:
-        String nombre = JOptionPane.showInputDialog("Ingrese nombre de la pestaña");
+        String nombre = JOptionPane.showInputDialog("Ingrese nombre de la pes");
         Editor txt = new Editor("..\\" + nombre, nombre);
         txt.pathArchivo = "";
         this.EditorTab.addTab(txt.getFileName(), txt);
@@ -257,10 +257,10 @@ public class AritIDE extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_inicioJCCActionPerformed
 
-    private void CerrarPestañaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarPestañaActionPerformed
+    private void CerrarPesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarPesta?±aActionPerformed
         // TODO add your handling code here:
         EditorTab.remove(EditorTab.getSelectedComponent());
-    }//GEN-LAST:event_CerrarPestañaActionPerformed
+    }//GEN-LAST:event_CerrarPesta?±aActionPerformed
 
     private void GuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GuardarActionPerformed
         // TODO add your handling code here:
@@ -352,7 +352,7 @@ public class AritIDE extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem Abrir;
-    private javax.swing.JMenuItem CerrarPestaña;
+    private javax.swing.JMenuItem CerrarPes;
     private javax.swing.JTextArea Consola;
     private javax.swing.JButton CupFlex;
     private javax.swing.JTabbedPane EditorTab;

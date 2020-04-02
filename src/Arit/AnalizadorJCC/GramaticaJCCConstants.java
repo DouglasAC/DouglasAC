@@ -15,97 +15,95 @@ public interface GramaticaJCCConstants {
   /** RegularExpression Id. */
   int DECIMAL = 8;
   /** RegularExpression Id. */
-  int IMPRIMIR = 9;
+  int SI = 9;
   /** RegularExpression Id. */
-  int SI = 10;
+  int SINO = 10;
   /** RegularExpression Id. */
-  int SINO = 11;
+  int TRUE = 11;
   /** RegularExpression Id. */
-  int TRUE = 12;
+  int FALSE = 12;
   /** RegularExpression Id. */
-  int FALSE = 13;
+  int NULO = 13;
   /** RegularExpression Id. */
-  int NULO = 14;
+  int SWITCH = 14;
   /** RegularExpression Id. */
-  int SWITCH = 15;
+  int CASE = 15;
   /** RegularExpression Id. */
-  int CASE = 16;
+  int DEFECTO = 16;
   /** RegularExpression Id. */
-  int DEFECTO = 17;
+  int WHILE = 17;
   /** RegularExpression Id. */
-  int WHILE = 18;
+  int BREAK = 18;
   /** RegularExpression Id. */
-  int BREAK = 19;
+  int CONTINUE = 19;
   /** RegularExpression Id. */
-  int CONTINUE = 20;
+  int RETURN = 20;
   /** RegularExpression Id. */
-  int RETURN = 21;
+  int FUNCTION = 21;
   /** RegularExpression Id. */
-  int FUNCTION = 22;
+  int FLECHA = 22;
   /** RegularExpression Id. */
-  int FLECHA = 23;
+  int DO = 23;
   /** RegularExpression Id. */
-  int DO = 24;
+  int FOR = 24;
   /** RegularExpression Id. */
-  int FOR = 25;
+  int IN = 25;
   /** RegularExpression Id. */
-  int IN = 26;
+  int PARA = 26;
   /** RegularExpression Id. */
-  int PARA = 27;
+  int PARC = 27;
   /** RegularExpression Id. */
-  int PARC = 28;
+  int BRAA = 28;
   /** RegularExpression Id. */
-  int BRAA = 29;
+  int BRAC = 29;
   /** RegularExpression Id. */
-  int BRAC = 30;
+  int LLAVEA = 30;
   /** RegularExpression Id. */
-  int LLAVEA = 31;
+  int LLAVEC = 31;
   /** RegularExpression Id. */
-  int LLAVEC = 32;
+  int MAS = 32;
   /** RegularExpression Id. */
-  int MAS = 33;
+  int MENOS = 33;
   /** RegularExpression Id. */
-  int MENOS = 34;
+  int POR = 34;
   /** RegularExpression Id. */
-  int POR = 35;
+  int DIVIDIDO = 35;
   /** RegularExpression Id. */
-  int DIVIDIDO = 36;
+  int POTENCIA = 36;
   /** RegularExpression Id. */
-  int POTENCIA = 37;
+  int MODULO = 37;
   /** RegularExpression Id. */
-  int MODULO = 38;
+  int TERNARIO = 38;
   /** RegularExpression Id. */
-  int TERNARIO = 39;
+  int DOSPUNTOS = 39;
   /** RegularExpression Id. */
-  int DOSPUNTOS = 40;
+  int PTCOMA = 40;
   /** RegularExpression Id. */
-  int PTCOMA = 41;
+  int IGUAL = 41;
   /** RegularExpression Id. */
-  int IGUAL = 42;
+  int MENORQUE = 42;
   /** RegularExpression Id. */
-  int MENORQUE = 43;
+  int MAYORQUE = 43;
   /** RegularExpression Id. */
-  int MAYORQUE = 44;
+  int MENORIGUAL = 44;
   /** RegularExpression Id. */
-  int MENORIGUAL = 45;
+  int MAYORIGUAL = 45;
   /** RegularExpression Id. */
-  int MAYORIGUAL = 46;
+  int IGUALIGUAL = 46;
   /** RegularExpression Id. */
-  int IGUALIGUAL = 47;
+  int DIFQUE = 47;
   /** RegularExpression Id. */
-  int DIFQUE = 48;
+  int COMA = 48;
   /** RegularExpression Id. */
-  int COMA = 49;
+  int AND = 49;
   /** RegularExpression Id. */
-  int AND = 50;
+  int OR = 50;
   /** RegularExpression Id. */
-  int OR = 51;
+  int NOT = 51;
   /** RegularExpression Id. */
-  int NOT = 52;
+  int IDENTIFICADOR = 52;
   /** RegularExpression Id. */
-  int IDENTIFICADOR = 53;
-  /** RegularExpression Id. */
-  int STRING = 56;
+  int STRING = 55;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -123,7 +121,6 @@ public interface GramaticaJCCConstants {
     "<token of kind 6>",
     "<ENTERO>",
     "<DECIMAL>",
-    "\"Print\"",
     "\"if\"",
     "\"else\"",
     "\"true\"",
@@ -169,7 +166,7 @@ public interface GramaticaJCCConstants {
     "\"!\"",
     "<IDENTIFICADOR>",
     "\"\\\"\"",
-    "<token of kind 55>",
+    "<token of kind 54>",
     "\"\\\"\"",
   };
 

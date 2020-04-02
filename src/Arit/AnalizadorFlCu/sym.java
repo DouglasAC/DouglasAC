@@ -9,53 +9,52 @@ package Arit.AnalizadorFlCu;
 public class sym {
   /* terminals */
   public static final int DOSPUNTOS = 8;
-  public static final int CASO = 37;
+  public static final int CASO = 36;
   public static final int POR = 13;
-  public static final int IMPRIMIR = 30;
   public static final int ENTERO = 27;
-  public static final int SI = 34;
-  public static final int FUNCION = 43;
-  public static final int CONTINUE = 40;
-  public static final int TERNARIO = 41;
-  public static final int FOR = 50;
-  public static final int IDENTIFICADOR = 33;
+  public static final int SI = 33;
+  public static final int FUNCION = 42;
+  public static final int CONTINUE = 39;
+  public static final int TERNARIO = 40;
+  public static final int FOR = 49;
+  public static final int IDENTIFICADOR = 32;
   public static final int NOT = 24;
   public static final int MENORIGUAL = 20;
   public static final int AND = 26;
-  public static final int IGUAL = 31;
-  public static final int SINO = 35;
+  public static final int IGUAL = 30;
+  public static final int SINO = 34;
   public static final int DIVIDIDO = 14;
-  public static final int IN = 49;
+  public static final int IN = 48;
   public static final int OR = 25;
-  public static final int SELECCIONAR = 36;
-  public static final int UMENOS = 46;
+  public static final int SELECCIONAR = 35;
+  public static final int UMENOS = 45;
   public static final int MAYORIGUAL = 21;
   public static final int EOF = 0;
   public static final int PARIZQ = 3;
   public static final int DECIMAL = 28;
   public static final int TRUE = 16;
   public static final int error = 1;
-  public static final int NULO = 45;
+  public static final int NULO = 44;
   public static final int COMA = 5;
   public static final int CADENA = 29;
   public static final int MODULO = 15;
   public static final int MENOS = 12;
   public static final int MENOR = 18;
   public static final int MAYOR = 19;
-  public static final int POTENCIA = 32;
+  public static final int POTENCIA = 31;
   public static final int BRAC = 10;
-  public static final int FLECHA = 44;
+  public static final int FLECHA = 43;
   public static final int BRAA = 9;
-  public static final int DOWHILE = 48;
-  public static final int DETENER = 39;
+  public static final int DOWHILE = 47;
+  public static final int DETENER = 38;
   public static final int IGUALIGUAL = 23;
-  public static final int WHILE = 47;
+  public static final int WHILE = 46;
   public static final int PTCOMA = 2;
-  public static final int RETORNAR = 42;
+  public static final int RETORNAR = 41;
   public static final int FALSE = 17;
   public static final int PARDER = 4;
   public static final int LLAVEC = 7;
-  public static final int DEFECTO = 38;
+  public static final int DEFECTO = 37;
   public static final int LLAVEA = 6;
   public static final int DIFQUE = 22;
   public static final int MAS = 11;
@@ -90,7 +89,6 @@ public class sym {
   "ENTERO",
   "DECIMAL",
   "CADENA",
-  "IMPRIMIR",
   "IGUAL",
   "POTENCIA",
   "IDENTIFICADOR",

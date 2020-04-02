@@ -60,7 +60,6 @@ inicioComentarioLinea = "#"
 <YYINITIAL>"do"             { return new Symbol(sym.DOWHILE, yyline, yychar, yytext()); }
 <YYINITIAL>"function"       { return new Symbol(sym.FUNCION, yyline, yychar, yytext()); }
 <YYINITIAL>"default"        { return new Symbol(sym.DEFECTO, yyline, yychar, yytext()); }
-<YYINITIAL>"print"          { return new Symbol(sym.IMPRIMIR, yyline, yychar, yytext()); }
 <YYINITIAL>"in"             { return new Symbol(sym.IN, yyline, yychar, yytext()); }
 <YYINITIAL>"for"            { return new Symbol(sym.FOR, yyline, yychar, yytext()); }
 

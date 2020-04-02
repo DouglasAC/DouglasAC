@@ -6,22 +6,24 @@
 package Arit.OperacionersPrimitivas;
 
 import Arit.AltaAbstraccion.Expresion;
-import Arit.AltaAbstraccion.Instruccion;
+import Arit.AltaAbstraccion.NodoAst;
+import Arit.Entorno.Funcion;
 import Arit.Entorno.Entorno;
+import Arit.Entorno.Parametro;
 import Error.ErrorAr;
 import Reportes.NodoDot;
+import java.util.LinkedList;
 
 /**
  *
  * @author ddani
  */
-public class Imprimir extends Instruccion {
+public class Imprimir extends Funcion {
 
-    Expresion valor;
+    public Expresion valor;
 
-    public Imprimir(Expresion valor, int fila, int columna) {
-        super(fila, columna);
-        this.valor = valor;
+    public Imprimir(String identificador, LinkedList<Parametro> parametros, LinkedList<NodoAst> sentencias, int fila, int columna) {
+        super(identificador, parametros, sentencias, fila, columna);
     }
 
     @Override
