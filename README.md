@@ -14,6 +14,11 @@ Soy **Ingeniero en Ciencias y Sistemas** apasionado por el desarrollo de softwar
 - **Herramientas**: Docker, Git, GitHub, CI/CD, AWS (básico).
 - **Metodologías**: Agile, Scrum.
 
+  ### 📂 **Mis proyectos destacados**
+- **[Django Blog App React](https://github.com/DouglasAC/blog-app-react-django)**  
+  Aplicación de blog interactiva desarrollada con **React**, **Python** y **Django**. Permite gestionar publicaciones en Markdown, con funcionalidades de autenticación, likes, comentarios y estadísticas personalizadas. 
+  📂 **Tecnologías**: Python, Django, React, Vite, Git.
+
 ### 📝 **Cómo contactarme**
 - **LinkedIn**: [linkedin.com/in/douglas-aguilar-cuque](www.linkedin.com/in/douglas-aguilar-cuque)
 - **GitHub**: [github.com/DouglasAC](https://github.com/DouglasAC)
